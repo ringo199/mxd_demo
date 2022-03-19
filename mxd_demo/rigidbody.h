@@ -6,6 +6,7 @@
 #include "var.h"
 #include "tools.h"
 #include <vector>
+#include <map>
 #include <cmath>
 
 using namespace std;
@@ -22,7 +23,8 @@ public:
 	~rigidbody();
 
 	void render_static_objs();
-	void rigidbody_move();
+	void rigidbody_check();
+	void graviry_check();
 
 	void push_static_objs(world_area*);
 	void push_dynamic_objs(world_area*);
@@ -30,6 +32,7 @@ public:
 private:
 	vector<world_area*> static_objs;
 	vector<world_area*> dynamic_objs;
+	map<world_area*, bool> is_on_grounds;
 
 	char _check_move_direction(world_area* static_obj, world_area* dynamic_obj);
 };

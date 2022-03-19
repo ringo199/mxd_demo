@@ -13,6 +13,7 @@ player_info::player_info()
 	this->area_atk_x = 50;
 	this->is_hit = false;
 	this->sa_percent = 1.0;
+	this->is_on_ground = false;
 
 	this->health = 50;
 	this->healthMax = 50;
@@ -114,15 +115,15 @@ void player_info::updown(int is_down)
 
 void player_info::jump()
 {
-	if (!this->is_jumping)
-	{
-		this->is_jumping = true;
-		this->jump_v = -30.0f;
-		this->_move(coord(0, this->jump_v));
-		this->is_runing = false;
-		s_update = true;
-		playSound("res/jump.mp3");
-	}
+	//if (!this->is_jumping)
+	//{
+	//	this->is_jumping = true;
+	this->jump_v = -30.0f;
+	this->_move(coord(0, this->jump_v));
+	this->is_runing = false;
+	s_update = true;
+	playSound("res/jump.mp3");
+	//}
 	if (this->status != player_status::JUMP)
 	{
 		this->status = player_status::JUMP;
@@ -188,12 +189,13 @@ void player_info::hitting()
 
 void player_info::droping()
 {
-	//if (this->player_area.get_coord1()->y <= 300)
-	//{
-	//	return;
-	//}
-	//this->jump_v += 0.3 * GRAVITY;
-	//this->_move(coord(0, this->jump_v));
+	if (this->is_on_ground)
+	{
+		return;
+	}
+
+	this->jump_v += 0.3 * GRAVITY;
+	this->_move(coord(0, this->jump_v));
 	//if (this->player_area.get_coord1()->y >= 300 && this->is_jumping)
 	//{
 	//	this->is_jumping = false;

@@ -17,8 +17,8 @@ void init(global* g)
 
 	carama.init(2000, 1000, 1080, 600);
 
-	pi.init(&carama, &rb, coord(200, 200));
-	ene.init(&carama, 500, 200);
+	pi.init(&carama, &rb, coord(300, 600));
+	ene.init(&carama, &rb, 500, 200);
 
 	g->init(&carama, &pi, &ene, &rb);
 

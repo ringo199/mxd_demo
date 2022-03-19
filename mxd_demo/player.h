@@ -49,6 +49,7 @@ public:
 	void cancelRuning();
 
 	bool is_attacking;
+	bool is_on_ground;
 
 private:
 	player_status status;

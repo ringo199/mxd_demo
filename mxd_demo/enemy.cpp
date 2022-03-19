@@ -20,7 +20,7 @@ enemy::~enemy()
 	this->imgEnemy = NULL;
 }
 
-void enemy::init(carama_info* carama, int x, int y)
+void enemy::init(carama_info* carama, rigidbody* rb, int x, int y)
 {
 	this->imgEnemy = new IMAGE[6];
 
@@ -40,6 +40,8 @@ void enemy::init(carama_info* carama, int x, int y)
 		this->enemy_area.get_width(), 10);
 
 	this->health_area.set_carama(carama);
+
+	rb->push_dynamic_objs(&this->enemy_area);
 }
 
 void enemy::render()

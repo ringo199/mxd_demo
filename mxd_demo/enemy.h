@@ -9,6 +9,7 @@
 #include <graphics.h>
 #include "tools.h"
 #include "carama.h"
+#include "rigidbody.h"
 
 class enemy
 {
@@ -28,7 +29,7 @@ public:
 	world_area hit_area;
 	world_area health_area;
 
-	void init(carama_info* carama, int x, int y);
+	void init(carama_info* carama, rigidbody* rb, int x, int y);
 	void render();
 	void renderHP();
 	void animator();
