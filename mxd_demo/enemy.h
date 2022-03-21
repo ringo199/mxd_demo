@@ -10,12 +10,13 @@
 #include "tools.h"
 #include "carama.h"
 #include "rigidbody.h"
+#include "objects.h"
 
-class enemy
+class old_enemy : public enemy
 {
 public:
-	enemy();
-	~enemy();
+	old_enemy(carama_info* carama);
+	~old_enemy();
 
 	enum class enemy_status
 	{
@@ -25,11 +26,7 @@ public:
 		COUNT
 	};
 
-	world_area enemy_area;
-	world_area hit_area;
-	world_area health_area;
-
-	void init(carama_info* carama, rigidbody* rb, int x, int y);
+	void init(rigidbody* rb, int x, int y);
 	void render();
 	void renderHP();
 	void animator();

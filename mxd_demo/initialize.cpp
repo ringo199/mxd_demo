@@ -10,15 +10,15 @@ void initialize()
 
 void init(global* g)
 {
-	static player_info	pi;
 	static carama_info	carama;
-	static enemy		ene;
+	static player_info	pi(&carama);
+	static old_enemy	ene(&carama);
 	static rigidbody	rb(&carama);
 
 	carama.init(2000, 1000, 1080, 600);
 
-	pi.init(&carama, &rb, coord(300, 600));
-	ene.init(&carama, &rb, 500, 200);
+	pi.init(&rb, 300, 600);
+	ene.init(&rb, 500, 600);
 
 	g->init(&carama, &pi, &ene, &rb);
 

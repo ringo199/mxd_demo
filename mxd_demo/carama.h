@@ -33,7 +33,6 @@ public:
 	void mapCoord2CaramaCoora(coord incoo, coord* outcoo);
 };
 
-
 class world_area : public area
 {
 public:

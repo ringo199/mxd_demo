@@ -15,10 +15,10 @@ public:
 	global();
 	~global();
 
-	void init(carama_info* carama, player_info* pi, enemy* ene, rigidbody* rb);
+	void init(carama_info* carama, player_info* pi, old_enemy* ene, rigidbody* rb);
 
 	player_info*	pi;
-	enemy*			ene;
+	old_enemy*		ene;
 	rigidbody*		rb;
 	carama_info*	carama;
 	bool*			update;

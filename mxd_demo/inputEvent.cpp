@@ -36,7 +36,7 @@ int GetCommand()
 // ·Ö·¢¿ØÖÆÃüÁî
 void DispatchCommand(int _cmd, global* g)
 {
-	//if (_cmd & CMD_UP)		g->pi->updown(-1);
+	//if (_cmd & CMD_UP)			g->pi->updown(-1);
 	//if (_cmd & CMD_DOWN)		g->pi->updown(1);
 	if (_cmd & CMD_LEFT)		g->pi->run(-1);
 	if (_cmd & CMD_RIGHT)		g->pi->run(1);

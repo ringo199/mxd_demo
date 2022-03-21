@@ -7,9 +7,8 @@
 
 static bool s_update = false;
 
-class coord
+struct coord
 {
-public:
 	coord()
 	{
 		this->x = 0;
@@ -35,6 +34,15 @@ public:
 		tmpcoo.y -= coo.y;
 		return tmpcoo;
 	};
+
+	int x_except_y()
+	{
+		if (y == 0)
+		{
+			return 0;
+		}
+		return x / y;
+	}
 
 	int x;
 	int y;

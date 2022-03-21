@@ -28,6 +28,7 @@ bool rectIntersect(world_area* a1, world_area* a2);
 void  preLoadSound(const char* name);
 void  playSound(const char* name);
 
+void testDrawBar(area* a);
 void drawBloodBar(area* a, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent);
 void drawBloodBar(int x, int y, int width, int height, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent);
 

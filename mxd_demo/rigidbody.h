@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include "objects.h"
 
 using namespace std;
 
@@ -26,13 +27,20 @@ public:
 	void rigidbody_check();
 	void graviry_check();
 
-	void push_static_objs(world_area*);
-	void push_dynamic_objs(world_area*);
+	void graviry_force();
 
+	void push_static_objs(block* s_obj);
+	void push_dynamic_objs(sprite_object* d_obj);
+
+	// todo:
+	// objects 分为动态和静态的，继承自world_area
+	// 动态的为player和enemy的base
+	// 静态的为ground和block的base
 private:
-	vector<world_area*> static_objs;
-	vector<world_area*> dynamic_objs;
-	map<world_area*, bool> is_on_grounds;
+	vector<block*> static_objs;
+	vector<sprite_object*> dynamic_objs;
+	// 两个物体地址的和作为key，方向作为value
+	map<long, char> two_obs_pos;
 
 	char _check_move_direction(world_area* static_obj, world_area* dynamic_obj);
 };

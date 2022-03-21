@@ -57,6 +57,12 @@
     <ClInclude Include="beforeEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="objects.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="staticObjectsManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tools.cpp">
@@ -111,6 +117,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="beforeEvent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="objects.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

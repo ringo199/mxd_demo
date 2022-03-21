@@ -141,9 +141,7 @@ coord* world_area::get_coord1()
 {
 	if (this->_is_ref)
 	{
-		coord tmp_coo = *this->_ref_coo + this->_off_coo;
-		this->_carama->mapCoord2CaramaCoora(tmp_coo, &this->_real_coo1);
-		this->_real_coo1;
+		this->_carama->mapCoord2CaramaCoora(*this->_ref_coo + this->_off_coo, &this->_real_coo1);
 	}
 	else
 	{

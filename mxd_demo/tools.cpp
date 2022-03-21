@@ -337,6 +337,11 @@ void  playSound(const char* name) {
     }
 }
 
+void testDrawBar(area* a)
+{
+    drawBloodBar(a, BLACK, YELLOW, WHITE, RED, 1.0);
+}
+
 void drawBloodBar(area* a, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent)
 {
     drawBloodBar(a->get_coord1()->x, a->get_coord1()->y, a->get_width(), a->get_height(), lineWidth, boardColor, emptyColor, fillColor, percent);

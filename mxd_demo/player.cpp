@@ -2,11 +2,11 @@
 #include "player.h"
 
 
-player_info::player_info()
+player_info::player_info(carama_info* carama): player(carama)
 {
 	this->status = player_status::IDLE;
 	this->imgIndex = 0;
-	this->speed = 1;
+	this->speed = 2;
 	this->is_reverse = false;
 	this->is_runing = false;
 	this->area_pad = 30;
@@ -23,24 +23,33 @@ player_info::~player_info()
 {
 }
 
-void player_info::init(carama_info* carama, rigidbody* rb, coord coo)
+void player_info::init(rigidbody* rb, int x, int y)
 {
-	this->_carama = carama;
 	this->_load();
 
-	this->player_area.init(coo,
+	this->initObject(coord(x, y),
 		this->imgPlayer[0].getwidth(), this->imgPlayer[0].getheight());
-	this->player_area.set_carama(carama);
 
-	this->hit_area.init(this->player_area.get_coord_base(), coord(this->area_pad, this->area_pad),
-		this->player_area.get_width() - 2 * this->area_pad, this->player_area.get_height() - this->area_pad);
-	this->hit_area.set_carama(carama);
+	this->setRenderArea(this);
 
-	this->atk_area.init(this->player_area.get_coord_base(), coord(this->area_pad + this->player_area.get_width(), this->area_pad),
-		this->area_atk_x, this->player_area.get_height() - 2 * this->area_pad);
-	this->atk_area.set_carama(carama);
+	this->setCollsionArea(this);
+		//coord(this->area_pad, this->area_pad),
+		//this->get_render_area()->get_width() - 2 * this->area_pad,
+		//this->get_render_area()->get_height() - this->area_pad);
 
-	rb->push_dynamic_objs(&this->player_area);
+	this->setHitArea(this,
+		coord(this->area_pad, this->area_pad),
+		this->get_render_area()->get_width() - 2 * this->area_pad,
+		this->get_render_area()->get_height() - this->area_pad);
+
+	this->setAttackArea(this,
+		coord(this->area_pad + this->get_render_area()->get_width(), this->area_pad),
+		this->area_atk_x,
+		this->get_render_area()->get_height() - 2 * this->area_pad);
+
+	this->setGroundCheckArea(this);
+
+	rb->push_dynamic_objs(this);
 }
 
 void player_info::_load()
@@ -56,16 +65,16 @@ void player_info::_load()
 
 void player_info::_move(coord coo)
 {
-	this->player_area.changeOffCoord(coo);
+	this->changeOffCoord(coo);
 
 	if (!this->is_reverse)
 	{
-		this->atk_area.changeRefOffCoord(
-			coord(this->area_pad + this->player_area.get_width(), this->area_pad));
+		this->get_attack_area()->changeRefOffCoord(
+			coord(this->area_pad + this->get_render_area()->get_width(), this->area_pad));
 	}
 	else
 	{
-		this->atk_area.changeRefOffCoord(
+		this->get_attack_area()->changeRefOffCoord(
 			coord(this->area_pad * -2, this->area_pad));
 	}
 }
@@ -115,18 +124,17 @@ void player_info::updown(int is_down)
 
 void player_info::jump()
 {
-	//if (!this->is_jumping)
-	//{
-	//	this->is_jumping = true;
-	this->jump_v = -30.0f;
-	this->_move(coord(0, this->jump_v));
-	this->is_runing = false;
-	s_update = true;
-	playSound("res/jump.mp3");
-	//}
-	if (this->status != player_status::JUMP)
+	if (this->is_on_ground)
 	{
-		this->status = player_status::JUMP;
+		this->v_y = -20;
+		//this->_move(coord(0, this->jump_v));
+		this->is_runing = false;
+		s_update = true;
+		playSound("res/jump.mp3");
+		if (this->status != player_status::JUMP)
+		{
+			this->status = player_status::JUMP;
+		}
 	}
 }
 
@@ -187,26 +195,6 @@ void player_info::hitting()
 	}
 }
 
-void player_info::droping()
-{
-	if (this->is_on_ground)
-	{
-		return;
-	}
-
-	this->jump_v += 0.3 * GRAVITY;
-	this->_move(coord(0, this->jump_v));
-	//if (this->player_area.get_coord1()->y >= 300 && this->is_jumping)
-	//{
-	//	this->is_jumping = false;
-	//	this->player_area.changeY(300);
-	//	if (this->status == player_status::JUMP)
-	//	{
-	//		this->status = player_status::IDLE;
-	//	}
-	//}
-}
-
 void player_info::attacking()
 {
 	static int count = 0;
@@ -244,7 +232,6 @@ void player_info::animator()
 	default:
 		break;
 	}
-	//this->droping();
 	this->hitting();
 }
 
@@ -255,10 +242,10 @@ void player_info::render()
 	case player_status::IDLE:
 	case player_status::RUN:
 	case player_status::JUMP:
-		putimagePNG2(player_area.get_coord1(), &this->imgPlayer[this->imgIndex], this->is_reverse, this->sa_percent);
+		putimagePNG2(this->get_render_area()->get_coord1(), &this->imgPlayer[this->imgIndex], this->is_reverse, this->sa_percent);
 		break;
 	case player_status::ATTACK:
-		putimagePNG2(player_area.get_coord1(), &this->imgAtkPlayer[this->imgIndex], this->is_reverse, this->sa_percent);
+		putimagePNG2(this->get_render_area()->get_coord1(), &this->imgAtkPlayer[this->imgIndex], this->is_reverse, this->sa_percent);
 		break;
 	default:
 		break;

@@ -2,7 +2,7 @@
 #include "enemy.h"
 
 
-enemy::enemy()
+old_enemy::old_enemy(carama_info* carama) : enemy(carama)
 {
 	this->imgIndex = 4;
 	this->status = enemy_status::IDLE;
@@ -14,48 +14,44 @@ enemy::enemy()
 	this->healthMax = 30;
 }
 
-enemy::~enemy()
+old_enemy::~old_enemy()
 {
 	delete this->imgEnemy;
 	this->imgEnemy = NULL;
 }
 
-void enemy::init(carama_info* carama, rigidbody* rb, int x, int y)
+void old_enemy::init(rigidbody* rb, int x, int y)
 {
 	this->imgEnemy = new IMAGE[6];
 
 	this->_load();
 
-	this->enemy_area.init(x, y, this->imgEnemy[0].getwidth(), this->imgEnemy[0].getheight());
-	this->enemy_area.set_carama(carama);
+	this->initObject(coord(x, y),
+		this->imgEnemy[0].getwidth(), this->imgEnemy[0].getheight());
+	this->setRenderArea(this);
+	this->setCollsionArea(this);
+	this->setHitArea(this, coord(this->area_pad, this->area_pad),
+		this->get_base_area()->get_width() - this->area_pad * 2,
+		this->get_base_area()->get_height() - this->area_pad);
+	this->setHealthArea(this, coord(0, -15), this->get_base_area()->get_width(), 10);
 
-	this->hit_area.init(
-		this->enemy_area.get_coord_base(), coord(this->area_pad, this->area_pad),
-		this->enemy_area.get_width() - this->area_pad * 2,
-		this->enemy_area.get_height() - this->area_pad);
-	this->hit_area.set_carama(carama);
+	this->setGroundCheckArea(this);
 
-	this->health_area.init(
-		this->enemy_area.get_coord_base(), coord(0, -15),
-		this->enemy_area.get_width(), 10);
-
-	this->health_area.set_carama(carama);
-
-	rb->push_dynamic_objs(&this->enemy_area);
+	rb->push_dynamic_objs(this);
 }
 
-void enemy::render()
+void old_enemy::render()
 {
-	putimagePNG2(this->enemy_area.get_coord1(), getwidth(), &this->imgEnemy[this->imgIndex], this->is_reverse, this->sa_percent);
+	putimagePNG2(this->get_render_area()->get_coord1(), getwidth(), &this->imgEnemy[this->imgIndex], this->is_reverse, this->sa_percent);
 }
 
-void enemy::renderHP()
+void old_enemy::renderHP()
 {
 	double percent = (double)(this->health * 100 / this->healthMax) / 100;
-	drawBloodBar(&this->health_area, 2, BLACK, LIGHTGRAY, RED, percent);
+	drawBloodBar(this->get_health_area(), 2, BLACK, LIGHTGRAY, RED, percent);
 }
 
-void enemy::animator()
+void old_enemy::animator()
 {
 	switch (this->status)
 	{
@@ -71,13 +67,13 @@ void enemy::animator()
 	this->hitting();
 }
 
-void enemy::ai()
+void old_enemy::ai()
 {
 	change_status();
 	move();
 }
 
-void enemy::change_status()
+void old_enemy::change_status()
 {
 	static int count = 0;
 	++count;
@@ -95,7 +91,7 @@ void enemy::change_status()
 	}
 }
 
-void enemy::move()
+void old_enemy::move()
 {
 	switch (this->status)
 	{
@@ -109,7 +105,7 @@ void enemy::move()
 	}
 }
 
-void enemy::hit(bool h = true)
+void old_enemy::hit(bool h = true)
 {
 	if (h)
 	{
@@ -123,7 +119,7 @@ void enemy::hit(bool h = true)
 	this->is_hit = h;
 }
 
-void enemy::hitting()
+void old_enemy::hitting()
 {
 	static int count = 0;
 	static double x = 0.0;
@@ -152,7 +148,7 @@ void enemy::hitting()
 	}
 }
 
-void enemy::_load()
+void old_enemy::_load()
 {
 	for (int i = 0; i < 6; i++)
 	{
@@ -161,19 +157,7 @@ void enemy::_load()
 	}
 }
 
-void enemy::_move()
+void old_enemy::_move()
 {
-	if (this->is_reverse)
-	{
-		this->enemy_area.changeOffX(speed);
-	}
-	else
-	{
-		this->enemy_area.changeOffX(-speed);
-	}
-
-	if (this->enemy_area.get_coord1()->x < 0)
-	{
-		this->enemy_area.changeX(0);
-	}
+	this->changeOffX((this->is_reverse ? 1 : -1) * speed);
 }

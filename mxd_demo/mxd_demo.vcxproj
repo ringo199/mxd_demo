@@ -147,10 +147,12 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="inputEvent.h" />
     <ClInclude Include="initialize.h" />
+    <ClInclude Include="objects.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="request.h" />
     <ClInclude Include="rigidbody.h" />
+    <ClInclude Include="staticObjectsManager.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="var.h" />
@@ -168,6 +170,7 @@
     <ClCompile Include="lib_json\json_writer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="initialize.cpp" />
+    <ClCompile Include="objects.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="request.cpp" />

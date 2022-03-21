@@ -10,7 +10,7 @@ global::~global()
 {
 }
 
-void global::init(carama_info* carama, player_info* pi, enemy* ene, rigidbody* rb)
+void global::init(carama_info* carama, player_info* pi, old_enemy* ene, rigidbody* rb)
 {
 	this->carama = carama;
 	this->pi	 = pi;

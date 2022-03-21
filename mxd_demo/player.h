@@ -10,11 +10,12 @@
 #include "carama.h"
 #include "rigidbody.h"
 #include "var.h"
+#include "objects.h"
 
-class player_info
+class player_info: public player
 {
 public:
-	player_info();
+	player_info(carama_info* carama);
 	~player_info();
 
 	enum class player_status
@@ -25,11 +26,7 @@ public:
 		ATTACK,
 	};
 
-	world_area player_area;
-	world_area hit_area;
-	world_area atk_area;
-
-	void init(carama_info* carama, rigidbody* rb, coord coo);
+	void init(rigidbody* rb, int x, int y);
 
 	void animator();
 	void render();
@@ -42,14 +39,12 @@ public:
 	void hit(bool h);
 	void hitting();
 
-	void droping();
 	void attacking();
 
 	void checkIsRuning();
 	void cancelRuning();
 
 	bool is_attacking;
-	bool is_on_ground;
 
 private:
 	player_status status;
@@ -57,13 +52,11 @@ private:
 	IMAGE imgAtkPlayer[12];
 	char path[64];
 	int imgIndex;
-	carama_info* _carama;
 
 	float jump_v; // ÌøÔ¾µÄËÙ¶È
 
 	bool is_reverse;
 	bool is_runing;
-	bool is_jumping;
 	bool is_hit;
 
 	float speed;

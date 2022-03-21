@@ -10,8 +10,8 @@ void hit(global* g)
 	++count2;
 	if (count1 > 30)
 	{
-		auto player_hit_area = &g->pi->hit_area;
-		auto enemy_hit_area = &g->ene->hit_area;
+		auto player_hit_area = g->pi->get_hit_area();
+		auto enemy_hit_area = g->ene->get_hit_area();
 
 		bool is_hit = rectIntersect(player_hit_area, enemy_hit_area);
 
@@ -27,8 +27,8 @@ void hit(global* g)
 	}
 	if (count2 > 30)
 	{
-		auto player_atk_area = &g->pi->atk_area;
-		auto enemy_hit_area = &g->ene->hit_area;
+		auto player_atk_area = g->pi->get_attack_area();
+		auto enemy_hit_area = g->ene->get_hit_area();
 
 		bool is_hit = rectIntersect(player_atk_area, enemy_hit_area);
 
