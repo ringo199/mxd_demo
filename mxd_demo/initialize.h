@@ -4,12 +4,12 @@
 #define __MAIN_LOOP_H__
 
 #include "tools.h"
-#include "render.h"
 #include "inputEvent.h"
 #include "global.h"
-#include "beforeEvent.h"
-#include "afterEvent.h"
 #include "collision.h"
+#include "gameManager.h"
+#include "ui_manager.h"
+#include "event_manager.h"
 
 #define FRAMES 16
 

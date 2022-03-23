@@ -8,11 +8,11 @@
 #include <graphics.h>
 #include "tools.h"
 #include "carama.h"
-#include "rigidbody.h"
 #include "var.h"
 #include "objects.h"
+#include "event_manager.h"
 
-class player_info: public player
+class player_info : public player
 {
 public:
 	player_info(carama_info* carama);
@@ -26,17 +26,19 @@ public:
 		ATTACK,
 	};
 
-	void init(rigidbody* rb, int x, int y);
+	void init(int x, int y);
 
-	void animator();
-	void render();
+	virtual void render() override;
+	virtual void animator() override;
+	virtual void other_event() override;
+
 	void renderHP();
 
 	void run(int is_right);
 	void updown(int is_daown);
 	void jump();
 	void attack();
-	void hit(bool h);
+	void hit();
 	void hitting();
 
 	void attacking();
@@ -44,7 +46,15 @@ public:
 	void checkIsRuning();
 	void cancelRuning();
 
-	bool is_attacking;
+	void eventRegister(event_manager*);
+	void clearEventRegister();
+
+	static void cmdUp(void*);
+	static void cmdDown(void*);
+    static void cmdLeftRun(void*);
+	static void cmdRightRun(void*);
+	static void cmdJump(void*);
+	static void cmdAttack(void*);
 
 private:
 	player_status status;
@@ -53,11 +63,8 @@ private:
 	char path[64];
 	int imgIndex;
 
-	float jump_v; // 跳跃的速度
-
 	bool is_reverse;
 	bool is_runing;
-	bool is_hit;
 
 	float speed;
 	int area_pad; // 面积的内边距
@@ -69,6 +76,8 @@ private:
 
 	void _load();
 	void _move(coord coo);
+
+	event_manager* _event_manager;
 };
 
 #endif

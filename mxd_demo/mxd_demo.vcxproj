@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -85,7 +85,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
@@ -140,42 +140,52 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="afterEvent.h" />
-    <ClInclude Include="beforeEvent.h" />
     <ClInclude Include="carama.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="event_manager.h" />
+    <ClInclude Include="gameManager.h" />
+    <ClInclude Include="game_scene_manager.h" />
     <ClInclude Include="inputEvent.h" />
     <ClInclude Include="initialize.h" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="render.h" />
-    <ClInclude Include="request.h" />
-    <ClInclude Include="rigidbody.h" />
-    <ClInclude Include="staticObjectsManager.h" />
+    <ClInclude Include="scene\game\game_scene_base.h" />
+    <ClInclude Include="scene\game_scene.h" />
+    <ClInclude Include="scene\scene_base.h" />
+    <ClInclude Include="scene\ui\ui_scene_base.h" />
+    <ClInclude Include="scene\ui_scene.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="ui_manager.h" />
     <ClInclude Include="var.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="afterEvent.cpp" />
-    <ClCompile Include="beforeEvent.cpp" />
     <ClCompile Include="carama.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="event_manager.cpp" />
+    <ClCompile Include="gameManager.cpp" />
+    <ClCompile Include="game_scene_manager.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="inputEvent.cpp" />
-    <ClCompile Include="lib_json\json_reader.cpp" />
-    <ClCompile Include="lib_json\json_value.cpp" />
-    <ClCompile Include="lib_json\json_writer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="initialize.cpp" />
     <ClCompile Include="objects.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="render.cpp" />
-    <ClCompile Include="request.cpp" />
-    <ClCompile Include="rigidbody.cpp" />
+    <ClCompile Include="scene\game\game_1.cpp" />
+    <ClCompile Include="scene\game\game_2.cpp" />
+    <ClCompile Include="scene\game\game_scene_base.cpp" />
+    <ClCompile Include="scene\scene_base.cpp" />
+    <ClCompile Include="scene\ui\ui_check_master_server.cpp" />
+    <ClCompile Include="scene\ui\ui_check_player.cpp" />
+    <ClCompile Include="scene\ui\ui_check_slave_server.cpp" />
+    <ClCompile Include="scene\ui\ui_game.cpp" />
+    <ClCompile Include="scene\ui\ui_loading.cpp" />
+    <ClCompile Include="scene\ui\ui_login.cpp" />
+    <ClCompile Include="scene\ui\ui_scene_base.cpp" />
     <ClCompile Include="tools.cpp" />
+    <ClCompile Include="ui_manager.cpp" />
     <ClCompile Include="var.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

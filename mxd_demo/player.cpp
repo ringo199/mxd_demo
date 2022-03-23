@@ -11,19 +11,21 @@ player_info::player_info(carama_info* carama): player(carama)
 	this->is_runing = false;
 	this->area_pad = 30;
 	this->area_atk_x = 50;
-	this->is_hit = false;
 	this->sa_percent = 1.0;
 	this->is_on_ground = false;
 
 	this->health = 50;
 	this->healthMax = 50;
+
+	this->_event_manager = NULL;
 }
 
 player_info::~player_info()
 {
+	this->clearEventRegister();
 }
 
-void player_info::init(rigidbody* rb, int x, int y)
+void player_info::init(int x, int y)
 {
 	this->_load();
 
@@ -48,8 +50,6 @@ void player_info::init(rigidbody* rb, int x, int y)
 		this->get_render_area()->get_height() - 2 * this->area_pad);
 
 	this->setGroundCheckArea(this);
-
-	rb->push_dynamic_objs(this);
 }
 
 void player_info::_load()
@@ -127,7 +127,6 @@ void player_info::jump()
 	if (this->is_on_ground)
 	{
 		this->v_y = -20;
-		//this->_move(coord(0, this->jump_v));
 		this->is_runing = false;
 		s_update = true;
 		playSound("res/jump.mp3");
@@ -140,9 +139,9 @@ void player_info::jump()
 
 void player_info::attack()
 {
-	if (!this->is_attacking)
+	if (!this->getIsAttack())
 	{
-		this->is_attacking = true;
+		this->startAttack();
 		this->imgIndex = 0;
 		this->is_runing = false;
 		s_update = true;
@@ -153,17 +152,13 @@ void player_info::attack()
 	}
 }
 
-void player_info::hit(bool h = true)
+void player_info::hit()
 {
-	if (h)
+	this->health -= 10;
+	if (this->health <= 0)
 	{
-		this->health -= 10;
-		if (this->health <= 0)
-		{
-			this->health = this->healthMax;
-		}
+		this->health = this->healthMax;
 	}
-	this->is_hit = h;
 }
 
 void player_info::hitting()
@@ -181,7 +176,7 @@ void player_info::hitting()
 	{
 		x = 0.0;
 	}
-	if (this->is_hit)
+	if (this->getIsHit())
 	{
 		this->sa_percent = cos(x);
 		if (this->sa_percent < 0)
@@ -209,7 +204,7 @@ void player_info::attacking()
 
 	if (this->imgIndex == 0)
 	{
-		this->is_attacking = false;
+		this->stopAttack();
 		this->status = player_status::IDLE;
 	}
 }
@@ -253,6 +248,11 @@ void player_info::render()
 	this->renderHP();
 }
 
+void player_info::other_event()
+{
+	this->checkIsRuning();
+}
+
 void player_info::checkIsRuning()
 {
 	if (!this->is_runing && this->status == player_status::RUN)
@@ -264,6 +264,63 @@ void player_info::checkIsRuning()
 void player_info::cancelRuning()
 {
 	this->is_runing = false;
+}
+
+void player_info::eventRegister(event_manager* eventManager)
+{
+	this->_event_manager = eventManager;
+	eventManager->eventRegister(GAME_CMD_LEFT, (long)&this->cmdLeftRun, this);
+	eventManager->eventRegister(GAME_CMD_RIGHT, (long)&this->cmdRightRun, this);
+	eventManager->eventRegister(GAME_CMD_UP, (long)&this->cmdUp, this);
+	eventManager->eventRegister(GAME_CMD_DOWN, (long)&this->cmdDown, this);
+	eventManager->eventRegister(GAME_CMD_JUMP, (long)&this->cmdJump, this);
+	eventManager->eventRegister(GAME_CMD_ATTACK, (long)&this->cmdAttack, this);
+}
+
+void player_info::clearEventRegister()
+{
+	this->_event_manager->clearEvent(GAME_CMD_LEFT);
+	this->_event_manager->clearEvent(GAME_CMD_RIGHT);
+	this->_event_manager->clearEvent(GAME_CMD_UP);
+	this->_event_manager->clearEvent(GAME_CMD_DOWN);
+	this->_event_manager->clearEvent(GAME_CMD_JUMP);
+	this->_event_manager->clearEvent(GAME_CMD_ATTACK);
+}
+
+void player_info::cmdUp(void* ctx)
+{
+	player_info* context = (player_info*)ctx;
+	context->updown(-1);
+}
+
+void player_info::cmdDown(void* ctx)
+{
+	player_info* context = (player_info*)ctx;
+	context->updown(1);
+}
+
+void player_info::cmdLeftRun(void* ctx)
+{
+	player_info* context = (player_info*)ctx;
+	context->run(-1);
+}
+
+void player_info::cmdRightRun(void* ctx)
+{
+	player_info* context = (player_info*)ctx;
+	context->run(1);
+}
+
+void player_info::cmdJump(void* ctx)
+{
+	player_info* context = (player_info*)ctx;
+	context->jump();
+}
+
+void player_info::cmdAttack(void* ctx)
+{
+	player_info* context = (player_info*)ctx;
+	context->attack();
 }
 
 void player_info::renderHP()

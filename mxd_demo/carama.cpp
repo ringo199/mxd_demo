@@ -10,26 +10,19 @@ carama_info::~carama_info()
 {
 }
 
-void carama_info::init(int map_width, int map_height, int camara_width, int camara_height, area* center_point_area)
-{
-	this->_map_area.init(0, 0, map_width, map_height);
-	this->_carama_area.init(0, 0, camara_width, camara_height);
-	this->_move_area.init(0, 0, map_width - camara_width, map_height - camara_height);
-
-	//this->changeCenterPoint(center_point_area->get_coord_center());
-	loadimage(&this->bg, "res/bark/bg.png", this->_map_area.get_width(), this->_map_area.get_height(), true);
-}
-
 void carama_info::init(int map_width, int map_height, int camara_width, int camara_height)
 {
 	this->_map_area.init(0, 0, map_width, map_height);
 	this->_carama_area.init(0, 0, camara_width, camara_height);
 	this->_move_area.init(0, 0, map_width - camara_width, map_height - camara_height);
-
-	loadimage(&this->bg, "res/bark/bg.png", this->_map_area.get_width(), this->_map_area.get_height(), true);
 }
 
-void carama_info::changeCenterPoint(coord* coo)
+void carama_info::setCenterPoint(coord* coo)
+{
+	this->_carama_center_point = coo;
+}
+
+void carama_info::changeCenterPoint()
 {
 	coord off_coo;
 	bool x_final = false,
@@ -37,7 +30,7 @@ void carama_info::changeCenterPoint(coord* coo)
 
 	while (!x_final || !y_final)
 	{
-		off_coo = *coo - *this->_carama_area.get_coord_center();
+		off_coo = *this->_carama_center_point - *this->_carama_area.get_coord_center();
 		if (!x_final)
 		{
 			if (off_coo.x > 0)

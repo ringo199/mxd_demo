@@ -10,23 +10,16 @@ void initialize()
 
 void init(global* g)
 {
-	static carama_info	carama;
-	static player_info	pi(&carama);
-	static old_enemy	ene(&carama);
-	static rigidbody	rb(&carama);
+	initgraph(1080, 600, 1);
 
-	carama.init(2000, 1000, 1080, 600);
+	static UIManager		uiManager;
+	static event_manager	eventManager;
 
-	pi.init(&rb, 300, 600);
-	ene.init(&rb, 500, 600);
+	uiManager.eventRegister(&eventManager);
 
-	g->init(&carama, &pi, &ene, &rb);
+	eventManager.eventEmit(UI_NEXT);
 
-	//mciSendString("play res/bg.mp3 repeat", 0, 0, 0);
-	initgraph(carama._carama_area.get_width(), carama._carama_area.get_height(), 1);
-
-	preLoadSound("res/atk.mp3");
-	preLoadSound("res/jump.mp3");
+	g->init(&uiManager, &eventManager);
 
 	keyEvent(g);
 }
@@ -47,9 +40,13 @@ void loop(global* g)
 		if (*g->update)
 		{
 			*g->update = false;
-			beforeEvent(g);
-			render(g);
-			afterEvent(g);
+			g->uiManager->getScene()->beforeEvent();
+
+			BeginBatchDraw();
+			g->uiManager->getScene()->render();
+			EndBatchDraw();
+
+			g->uiManager->getScene()->afterEvent();
 		}
 	}
 }

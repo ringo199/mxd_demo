@@ -3,12 +3,59 @@
 #ifndef __VAR_H__
 #define __VAR_H__
 
+#include <stdio.h>
+
 #define GRAVITY 10;
 
 static bool s_update = false;
 
-struct coord
+enum e_scene_type
 {
+	LOADING = -2,
+	UI_SCENE_NULL = -1,
+
+	CHECK_MASTER_SERVER,
+	LOGIN,
+	CHECK_SLAVE_SERVER,
+	CHECK_PLAYER,
+	GAME,
+
+	UI_COUNT
+};
+
+enum e_game_scene_type
+{
+	GAME_SCENE_NULL = -1,
+	GAME_1,
+	GAME_2,
+
+	GAME_SCENE_COUNT
+};
+
+enum e_event_type
+{
+	UI_NEXT,
+	UI_BACK,
+	UI_BACKHOME,
+
+	UI_BEGIN_LOADING,
+	UI_END_LOADING,
+
+	GAME_GOTO_SCENE,
+
+	//-- game
+	GAME_CMD_LEFT,
+	GAME_CMD_RIGHT,
+	GAME_CMD_UP,
+	GAME_CMD_DOWN,
+	GAME_CMD_JUMP,
+	GAME_CMD_ATTACK,
+};
+
+
+class coord
+{
+public:
 	coord()
 	{
 		this->x = 0;

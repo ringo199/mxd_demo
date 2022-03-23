@@ -12,15 +12,17 @@ old_enemy::old_enemy(carama_info* carama) : enemy(carama)
 
 	this->health = 30;
 	this->healthMax = 30;
+
+	this->startAttack();
 }
 
 old_enemy::~old_enemy()
 {
-	delete this->imgEnemy;
-	this->imgEnemy = NULL;
+	//delete this->imgEnemy;
+	//this->imgEnemy = NULL;
 }
 
-void old_enemy::init(rigidbody* rb, int x, int y)
+void old_enemy::init(int x, int y)
 {
 	this->imgEnemy = new IMAGE[6];
 
@@ -30,19 +32,22 @@ void old_enemy::init(rigidbody* rb, int x, int y)
 		this->imgEnemy[0].getwidth(), this->imgEnemy[0].getheight());
 	this->setRenderArea(this);
 	this->setCollsionArea(this);
+	this->setAttackArea(this, coord(this->area_pad, this->area_pad),
+		this->get_base_area()->get_width() - this->area_pad * 2,
+		this->get_base_area()->get_height() - this->area_pad);
 	this->setHitArea(this, coord(this->area_pad, this->area_pad),
 		this->get_base_area()->get_width() - this->area_pad * 2,
 		this->get_base_area()->get_height() - this->area_pad);
 	this->setHealthArea(this, coord(0, -15), this->get_base_area()->get_width(), 10);
 
 	this->setGroundCheckArea(this);
-
-	rb->push_dynamic_objs(this);
 }
 
 void old_enemy::render()
 {
 	putimagePNG2(this->get_render_area()->get_coord1(), getwidth(), &this->imgEnemy[this->imgIndex], this->is_reverse, this->sa_percent);
+
+	this->renderHP();
 }
 
 void old_enemy::renderHP()
@@ -65,6 +70,11 @@ void old_enemy::animator()
 		break;
 	}
 	this->hitting();
+}
+
+void old_enemy::other_event()
+{
+	this->ai();
 }
 
 void old_enemy::ai()
@@ -105,18 +115,14 @@ void old_enemy::move()
 	}
 }
 
-void old_enemy::hit(bool h = true)
+void old_enemy::hit()
 {
-	if (h)
+	this->health -= 10;
+	if (this->health <= 0)
 	{
-		this->health -= 10;
-		if (this->health <= 0)
-		{
-			this->health = this->healthMax;
-		}
-		playSound("res/atk.mp3");
+		this->health = this->healthMax;
 	}
-	this->is_hit = h;
+	playSound("res/atk.mp3");
 }
 
 void old_enemy::hitting()
@@ -134,7 +140,7 @@ void old_enemy::hitting()
 	{
 		x = 0.0;
 	}
-	if (this->is_hit)
+	if (this->getIsHit())
 	{
 		this->sa_percent = cos(x);
 		if (this->sa_percent < 0)

@@ -3,17 +3,17 @@
 
 global::global()
 {
-	this->update = &s_update;
+	this->update		=	&s_update;
+	this->uiManager		=	NULL;
+	this->eventManager	=	NULL;
 }
 
 global::~global()
 {
 }
 
-void global::init(carama_info* carama, player_info* pi, old_enemy* ene, rigidbody* rb)
+void global::init(UIManager* uiManager, event_manager* eventManager)
 {
-	this->carama = carama;
-	this->pi	 = pi;
-	this->ene	 = ene;
-	this->rb	 = rb;
+	this->uiManager = uiManager;
+	this->eventManager = eventManager;
 }

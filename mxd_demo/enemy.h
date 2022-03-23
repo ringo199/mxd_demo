@@ -9,7 +9,6 @@
 #include <graphics.h>
 #include "tools.h"
 #include "carama.h"
-#include "rigidbody.h"
 #include "objects.h"
 
 class old_enemy : public enemy
@@ -26,14 +25,17 @@ public:
 		COUNT
 	};
 
-	void init(rigidbody* rb, int x, int y);
-	void render();
+	void init(int x, int y);
+
+	virtual void render() override;
+	virtual void animator() override;
+	virtual void other_event() override;
+
 	void renderHP();
-	void animator();
 	void ai();
 	void change_status();
 	void move();
-	void hit(bool);
+	void hit();
 	void hitting();
 
 private:

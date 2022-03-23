@@ -1,48 +1,336 @@
 
 #include "collision.h"
 
-
-void hit(global* g)
+collision::collision()
 {
-	static int count1 = 30;
-	static int count2 = 30;
-	++count1;
-	++count2;
-	if (count1 > 30)
+}
+
+collision::~collision()
+{
+}
+
+void collision::rigidbody_check()
+{
+	int i, j;
+	world_area* static_area, * dynamic_area;
+	for (i = 0; i < this->_static_collsion_objects.size(); ++i)
 	{
-		auto player_hit_area = g->pi->get_hit_area();
-		auto enemy_hit_area = g->ene->get_hit_area();
-
-		bool is_hit = rectIntersect(player_hit_area, enemy_hit_area);
-
-		if (is_hit)
+		static_area = this->_static_collsion_objects[i]->get_collsion_area();
+		for (j = 0; j < this->_dynamic_collsion_objects.size(); ++j)
 		{
-			count1 = 0;
-			g->pi->hit(true);
-		}
-		else
-		{
-			g->pi->hit(false);
-		}
-	}
-	if (count2 > 30)
-	{
-		auto player_atk_area = g->pi->get_attack_area();
-		auto enemy_hit_area = g->ene->get_hit_area();
+			dynamic_area = this->_dynamic_collsion_objects[j]->get_collsion_area();
 
-		bool is_hit = rectIntersect(player_atk_area, enemy_hit_area);
-
-		if (is_hit)
-		{
-			if (g->pi->is_attacking)
+			if (rectIntersect(static_area, dynamic_area))
 			{
-				count2 = 0;
-				g->ene->hit(true);
+				switch (this->_check_move_direction(static_area, dynamic_area))
+				{
+				case TOP:
+					this->_dynamic_collsion_objects[j]->changeY(
+						static_area->get_coord1_in_world()->y -
+						this->_dynamic_collsion_objects[j]->get_height());
+					break;
+				case BOTTOM:
+					this->_dynamic_collsion_objects[j]->changeY(
+						static_area->get_coord2_in_world()->y);
+					break;
+				case LEFT:
+					this->_dynamic_collsion_objects[j]->changeX(
+						static_area->get_coord1_in_world()->x -
+						this->_dynamic_collsion_objects[j]->get_width());
+					break;
+				case RIGHT:
+					this->_dynamic_collsion_objects[j]->changeX(
+						static_area->get_coord2_in_world()->x);
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				two_obs_pos[(long)dynamic_area + (long)static_area] =
+					this->_check_move_direction(static_area, dynamic_area);
 			}
 		}
-		else
+	}
+}
+
+void collision::graviry_check()
+{
+	int i, j;
+	for (i = 0; i < this->_dynamic_collsion_objects.size(); ++i)
+	{
+		for (j = 0; j < this->_static_collsion_objects.size(); ++j)
 		{
-			g->ene->hit(false);
+			//testDrawBar(this->_static_collsion_objects[j]->get_collsion_area());
+			//testDrawBar(this->_dynamic_collsion_objects[i]->get_ground_check_area());
+
+			if (rectIntersect(
+				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->x,
+				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->y,
+				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord2_in_world()->x,
+				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord2_in_world()->y,
+
+				this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->x,
+				this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->y,
+				this->_static_collsion_objects[j]->get_collsion_area()->get_coord2_in_world()->x,
+				this->_static_collsion_objects[j]->get_collsion_area()->get_coord2_in_world()->y
+			))
+			{
+				//printf("s: x: %d, y: %d, w, %d, h: %d\nd: x: %d, y: %d, w, %d, h: %d\n",
+				//	this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->x,
+				//	this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->y,
+				//	this->_static_collsion_objects[j]->get_collsion_area()->get_width(),
+				//	this->_static_collsion_objects[j]->get_collsion_area()->get_height(),
+				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->x,
+				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->y,
+				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_width(),
+				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_height()
+				//);
+				this->_dynamic_collsion_objects[i]->is_on_ground = true;
+				break;
+			}
+			if (j >= this->_static_collsion_objects.size())
+			{
+				this->_dynamic_collsion_objects[i]->is_on_ground = false;
+			}
 		}
 	}
+	/*vector<static_collsion_object*>::iterator s_it;
+	vector<dynamic_collsion_object*>::iterator d_it;
+	for (d_it = this->_dynamic_collsion_objects.begin(); d_it != this->_dynamic_collsion_objects.end(); ++d_it)
+	{
+		testDrawBar((*d_it)->get_ground_check_area());
+		for (s_it = this->_static_collsion_objects.begin(); s_it != this->_static_collsion_objects.end(); ++s_it)
+		{
+			testDrawBar((*s_it)->get_collsion_area());
+			if (rectIntersect((*s_it)->get_collsion_area(),
+				(*d_it)->get_ground_check_area()))
+			{
+				printf("s: x: %d, y: %d, w, %d, h: %d\nd: x: %d, y: %d, w, %d, h: %d\n",
+					(*s_it)->get_collsion_area()->get_coord1_in_world()->x,
+					(*s_it)->get_collsion_area()->get_coord1_in_world()->y,
+					(*s_it)->get_collsion_area()->get_width(),
+					(*s_it)->get_collsion_area()->get_height(),
+					(*d_it)->get_ground_check_area()->get_coord1_in_world()->x,
+					(*d_it)->get_ground_check_area()->get_coord1_in_world()->y,
+					(*d_it)->get_ground_check_area()->get_width(),
+					(*d_it)->get_ground_check_area()->get_height()
+				);
+				(*d_it)->is_on_ground = true;
+				break;
+			}
+			if (s_it >= this->_static_collsion_objects.end())
+			{
+				(*d_it)->is_on_ground = false;
+			}
+		}
+	}*/
+}
+
+void collision::graviry_force()
+{
+	vector<dynamic_collsion_object*>::iterator d_it;
+
+	for (d_it = this->_dynamic_collsion_objects.begin(); d_it != this->_dynamic_collsion_objects.end(); ++d_it)
+	{
+		(*d_it)->v_y += 0.1 * GRAVITY;
+		if ((*d_it)->is_on_ground)
+		{
+			if ((*d_it)->v_y > 0)
+			{
+				(*d_it)->v_y = 0;
+			}
+		}
+		(*d_it)->changeOffY((*d_it)->v_y);
+	}
+	//for (int i = 0; i < dynamic_objs->size(); ++i)
+	//{
+	//	(*dynamic_objs)[i]->v_y += 0.1 * GRAVITY;
+	//	if ((*dynamic_objs)[i]->is_on_ground)
+	//	{
+	//		if ((*dynamic_objs)[i]->v_y > 0)
+	//		{
+	//			(*dynamic_objs)[i]->v_y = 0;
+	//		}
+	//	}
+	//	(*dynamic_objs)[i]->changeOffY((*dynamic_objs)[i]->v_y);
+	//}
+}
+
+void collision::clear_objects()
+{
+	vector<static_collsion_object*>().swap(this->_static_collsion_objects);
+	vector<dynamic_collsion_object*>().swap(this->_dynamic_collsion_objects);
+
+	map<long, char>().swap(this->two_obs_pos);
+}
+
+/*
+ * 检测明确的碰撞方向
+ *
+ * 每次发生碰撞的时候会有来自8个方向的碰撞，再根据碰撞的参数返回正确的方向
+ *
+ * 1.通过两个矩形的中心比较方向，将方向范围缩小成3个
+ * 2.对矩形进入的范围进行判断，如果全部进入则结果为正方向之一并进行返回
+ * 3.将碰撞矩形的坐标进行差值计算并取绝对值，取较长的一侧为正方向
+ * todo:
+ * 1.优化3步骤，取两个物体中心点的夹角和静态物体碰撞的角和该中心点的夹角的差来计算正方向
+ * 2.禁止穿越，在碰撞检测之前记录动态物体相对静态物体的位置，如果发生碰撞只可以碰撞记录的位置
+ * 3.精细类型，比如only_top作为平台支撑的type
+ *
+ */
+char collision::_check_move_direction(world_area* static_obj, world_area* dynamic_obj)
+{
+	char tmp_result = 0x0;
+	// 0.读取碰撞之前的char，结果必须在这三个值中产生
+
+	// 1.通过两个矩形的中心比较方向，将方向范围缩小成3个
+
+	coord tmp_coo =
+		*dynamic_obj->get_coord_center_in_world() - *static_obj->get_coord_center_in_world();
+
+	if (tmp_coo.x < 0) tmp_result |= LEFT;
+	if (tmp_coo.x > 0) tmp_result |= RIGHT;
+	if (tmp_coo.y < 0) tmp_result |= TOP;
+	if (tmp_coo.y > 0) tmp_result |= BOTTOM;
+
+	// 如果有一个方向为0则直接返回该正方向，两个方向为0则返回默认的TOP
+	switch (tmp_result)
+	{
+	case 0x0:
+		return TOP;
+	case TOP:
+	case BOTTOM:
+	case LEFT:
+	case RIGHT:
+		return tmp_result;
+	default:
+		break;
+	}
+
+	// 计算下面两个角到中点的距离的宽除高是否有一个小于宽除高
+	//if (tmp_result & TOP)
+	//{
+	//	if (static_obj->get_width() / static_obj->get_height() -
+	//		abs((* dynamic_obj->get_coord2_in_world() -
+	//		*static_obj->get_coord_center_in_world()).x_except_y())
+	//		> 0 ||
+	//		static_obj->get_width() / static_obj->get_height() -
+	//		abs((coord(dynamic_obj->get_coord1_in_world()->x, dynamic_obj->get_coord2_in_world()->y) -
+	//		*static_obj->get_coord_center_in_world()).x_except_y())
+	//		> 0)
+	//	{
+	//		return TOP;
+	//	}
+	//	else
+	//	{
+	//		return tmp_result - TOP;
+	//	}
+	//}
+
+	//if (tmp_result & BOTTOM)
+	//{
+	//	if (static_obj->get_width() / static_obj->get_height() -
+	//		abs((*dynamic_obj->get_coord1_in_world() -
+	//		*static_obj->get_coord_center_in_world()).x_except_y())
+	//		> 0 ||
+	//		static_obj->get_width() / static_obj->get_height() -
+	//		abs((coord(dynamic_obj->get_coord2_in_world()->x, dynamic_obj->get_coord1_in_world()->y) -
+	//			*static_obj->get_coord_center_in_world()).x_except_y())
+	//		> 0)
+	//	{
+	//		return BOTTOM;
+	//	}
+	//	else
+	//	{
+	//		return tmp_result - BOTTOM;
+	//	}
+	//}
+
+
+
+	// 2.对矩形进入的范围进行判断，如果全部进入则结果为正方向之一并进行返回
+
+	if (tmp_result & TOP)
+	{
+		if (dynamic_obj->get_coord1_in_world()->x >
+			static_obj->get_coord1_in_world()->x &&
+			dynamic_obj->get_coord2_in_world()->x <
+			static_obj->get_coord2_in_world()->x)
+		{
+			return TOP;
+		}
+	}
+	if (tmp_result & BOTTOM)
+	{
+		if (dynamic_obj->get_coord1_in_world()->x >
+			static_obj->get_coord1_in_world()->x &&
+			dynamic_obj->get_coord2_in_world()->x <
+			static_obj->get_coord2_in_world()->x)
+		{
+			return BOTTOM;
+		}
+	}
+	if (tmp_result & LEFT)
+	{
+		if (dynamic_obj->get_coord1_in_world()->y >
+			static_obj->get_coord1_in_world()->y &&
+			dynamic_obj->get_coord2_in_world()->y <
+			static_obj->get_coord2_in_world()->y)
+		{
+			return LEFT;
+		}
+	}
+	if (tmp_result & RIGHT)
+	{
+		if (dynamic_obj->get_coord1_in_world()->y >
+			static_obj->get_coord1_in_world()->y &&
+			dynamic_obj->get_coord2_in_world()->y <
+			static_obj->get_coord2_in_world()->y)
+		{
+			return RIGHT;
+		}
+	}
+
+	// 3.将碰撞矩形的坐标进行差值计算并取绝对值，取较长的一侧为正方向
+
+	// 左上
+	if ((tmp_result & LEFT) && (tmp_result & TOP))
+	{
+		tmp_coo = *dynamic_obj->get_coord2_in_world() - *static_obj->get_coord1_in_world();
+		// is_width_than
+		if (abs(tmp_coo.x) - abs(tmp_coo.y) >= 0) return TOP;
+		else return LEFT;
+	}
+	// 右上
+	else if ((tmp_result & RIGHT) && (tmp_result & TOP))
+	{
+		tmp_coo = coord(
+			dynamic_obj->get_coord1_in_world()->x - static_obj->get_coord2_in_world()->x,
+			dynamic_obj->get_coord2_in_world()->y - static_obj->get_coord1_in_world()->y);
+		// is_width_than
+		if (abs(tmp_coo.x) - abs(tmp_coo.y) >= 0) return TOP;
+		else return RIGHT;
+	}
+	// 左下
+	else if ((tmp_result & LEFT) && (tmp_result & BOTTOM))
+	{
+		tmp_coo = coord(
+			dynamic_obj->get_coord2_in_world()->x - static_obj->get_coord1_in_world()->x,
+			dynamic_obj->get_coord1_in_world()->y - static_obj->get_coord2_in_world()->y);
+		// is_width_than
+		if (abs(tmp_coo.x) - abs(tmp_coo.y) >= 0) return BOTTOM;
+		else return LEFT;
+	}
+	// 右下
+	else if ((tmp_result & RIGHT) && (tmp_result & BOTTOM))
+	{
+		tmp_coo = *dynamic_obj->get_coord1_in_world() - *static_obj->get_coord2_in_world();
+		// is_width_than
+		if (abs(tmp_coo.x) - abs(tmp_coo.y) >= 0) return BOTTOM;
+		else return RIGHT;
+	}
+
+	return 0x0;
 }

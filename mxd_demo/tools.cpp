@@ -5,10 +5,14 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
+unsigned long long getTickCount()
+{
+    return GetTickCount64();
+}
 
 int getDelay() {
     static unsigned long long lastTime = 0;
-    unsigned long long currentTime = GetTickCount();
+    unsigned long long currentTime = GetTickCount64();
     if (lastTime == 0) {
         lastTime = currentTime;
         return 0;

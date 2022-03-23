@@ -48,6 +48,8 @@ void area::init(coord coo, int w, int h)
 	this->_coo = coo;
 	this->_w = w;
 	this->_h = h;
+	this->_is_ref = false;
+	this->_ref_coo = NULL;
 }
 
 void area::init(int x, int y, int w, int h)
@@ -55,6 +57,8 @@ void area::init(int x, int y, int w, int h)
 	this->_coo = coord(x, y);
 	this->_w = w;
 	this->_h = h;
+	this->_is_ref = false;
+	this->_ref_coo = NULL;
 }
 
 void area::changeCoord(coord coo)

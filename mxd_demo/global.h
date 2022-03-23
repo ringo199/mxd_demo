@@ -4,10 +4,11 @@
 
 #include "carama.h"
 #include "player.h"
-#include "rigidbody.h"
 #include "enemy.h"
+#include "gameManager.h"
 #include "var.h"
-
+#include "event_manager.h"
+#include "ui_manager.h"
 
 class global
 {
@@ -15,12 +16,11 @@ public:
 	global();
 	~global();
 
-	void init(carama_info* carama, player_info* pi, old_enemy* ene, rigidbody* rb);
+	void init(UIManager* uiManager, event_manager* eventManager);
 
-	player_info*	pi;
-	old_enemy*		ene;
-	rigidbody*		rb;
-	carama_info*	carama;
+	UIManager*		uiManager;
+	event_manager*	eventManager;
+
 	bool*			update;
 
 private:

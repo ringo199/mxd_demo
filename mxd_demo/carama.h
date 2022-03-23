@@ -20,17 +20,17 @@ public:
 	area _carama_area;	// 视野大小
 	area _move_area;	// 可以移动的视野大小，从左上角到右下角的全部面积
 
-	// tmp
-	IMAGE bg;
-
-	void init(int map_width, int map_height, int camara_width, int camara_height, area* center_point_area);
 	void init(int map_width, int map_height, int camara_width, int camara_height);
 
-	void changeCenterPoint(coord* coo);
+	void setCenterPoint(coord* coo);
+	void changeCenterPoint();
 
 	//void mapCoord2CaramaCoora(int x, int y, int* ox, int* oy, bool* isVisible);
 	void mapCoord2CaramaCoora(int x, int y, int* ox, int* oy);
 	void mapCoord2CaramaCoora(coord incoo, coord* outcoo);
+
+private:
+	coord* _carama_center_point;
 };
 
 class world_area : public area

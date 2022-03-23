@@ -5,6 +5,8 @@
 #include <graphics.h>
 #include "carama.h"
 
+
+unsigned long long getTickCount();
 //返回距离上一次调用间隔的时间（单位：ms)，第一次调用时返回0
 int getDelay();
 

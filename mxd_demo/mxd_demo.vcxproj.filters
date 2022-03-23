@@ -18,9 +18,6 @@
     <ClInclude Include="tools.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="render.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="inputEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -28,9 +25,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="global.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="afterEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="carama.h">
@@ -45,22 +39,37 @@
     <ClInclude Include="enemy.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="request.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="collision.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="rigidbody.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="beforeEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="objects.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="staticObjectsManager.h">
+    <ClInclude Include="gameManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\game\game_scene_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\scene_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\ui_scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\ui\ui_scene_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\game_scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="event_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="game_scene_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_manager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,16 +80,10 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="render.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="inputEvent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="initialize.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="afterEvent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="global.cpp">
@@ -95,31 +98,58 @@
     <ClCompile Include="enemy.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="lib_json\json_value.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib_json\json_writer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib_json\json_reader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="request.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="collision.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="rigidbody.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="var.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="beforeEvent.cpp">
+    <ClCompile Include="objects.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="objects.cpp">
+    <ClCompile Include="gameManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\game_1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\game_2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\game_scene_base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\scene_base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_check_master_server.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_check_player.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_check_slave_server.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_game.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_loading.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_login.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ui\ui_scene_base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="event_manager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="game_scene_manager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_manager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
