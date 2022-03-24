@@ -1,6 +1,8 @@
 
 #include "global.h"
 
+namespace global
+{
 static bool s_update = false;
 
 static event_manager	*s_event_manager 		= NULL;
@@ -57,4 +59,4 @@ GameSceneManager* GetGameSceneManager()
 
 	return s_game_scene_manager;
 }
-
+}
