@@ -1,24 +1,22 @@
 
 #include "inputEvent.h"
 
-void keyEvent(global* g)
+void keyEvent()
 {
-	HANDLE hThread = CreateThread(NULL, 0, create_th, (LPVOID)g, 0, NULL);
+	HANDLE hThread = CreateThread(NULL, 0, create_th, NULL, 0, NULL);
 
 	CloseHandle(hThread);
 }
 
 DWORD WINAPI create_th(LPVOID args)
 {
-	global* g = (global*)args;
-
 	for (;;)
 	{
-		DispatchCommand(GetCommand(), g);
+		DispatchCommand(GetCommand());
 	}
 }
 
-// »ñÈ¡¿ØÖÆÃüÁî
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int GetCommand()
 {
 	int c = 0;
@@ -37,7 +35,7 @@ int GetCommand()
 	return c;
 }
 
-// ·Ö·¢¿ØÖÆÃüÁî
+// ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void DispatchCommand(int _cmd, global* g)
 {
 	if (_cmd & CMD_LSHI)
@@ -49,7 +47,7 @@ void DispatchCommand(int _cmd, global* g)
 			return;
 		}
 		count1 = 0;
-		g->eventManager->eventEmit(UI_BACK);
+		GetEventManager()->eventEmit(UI_BACK);
 	}
 	if (_cmd & CMD_RSHI)
 	{
@@ -60,16 +58,17 @@ void DispatchCommand(int _cmd, global* g)
 			return;
 		}
 		count2 = 0;
-		g->eventManager->eventEmit(UI_NEXT);
+		GetEventManager()->eventEmit(UI_NEXT);
 	};
-	if (_cmd & CMD_UP)			g->eventManager->eventEmit(GAME_CMD_UP);
-	if (_cmd & CMD_DOWN)		g->eventManager->eventEmit(GAME_CMD_DOWN);
-	if (_cmd & CMD_LEFT)		g->eventManager->eventEmit(GAME_CMD_LEFT);
-	if (_cmd & CMD_RIGHT)		g->eventManager->eventEmit(GAME_CMD_RIGHT);
-	if (_cmd & CMD_JUMP)		g->eventManager->eventEmit(GAME_CMD_JUMP);
-	if (_cmd & CMD_ATTACK)		g->eventManager->eventEmit(GAME_CMD_ATTACK);
-	if (_cmd & CMD_SPACE)		g->eventManager->eventEmit(GAME_GOTO_SCENE, GAME_2);
-	if (_cmd & CMD_BACK)		g->eventManager->eventEmit(GAME_GOTO_SCENE, GAME_1);
+
+	if (_cmd & CMD_UP)			GetEventManager()->eventEmit(GAME_CMD_UP);
+	if (_cmd & CMD_DOWN)		GetEventManager()->eventEmit(GAME_CMD_DOWN);
+	if (_cmd & CMD_LEFT)		GetEventManager()->eventEmit(GAME_CMD_LEFT);
+	if (_cmd & CMD_RIGHT)		GetEventManager()->eventEmit(GAME_CMD_RIGHT);
+	if (_cmd & CMD_JUMP)		GetEventManager()->eventEmit(GAME_CMD_JUMP);
+	if (_cmd & CMD_ATTACK)		GetEventManager()->eventEmit(GAME_CMD_ATTACK);
+	if (_cmd & CMD_SPACE)		GetEventManager()->eventEmit(GAME_GOTO_SCENE, GAME_2);
+	if (_cmd & CMD_BACK)		GetEventManager()->eventEmit(GAME_GOTO_SCENE, GAME_1);
 
 	//if (_cmd == 0)				g->gm->_player->cancelRuning();
 }

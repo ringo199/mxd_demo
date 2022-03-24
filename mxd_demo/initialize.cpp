@@ -1,30 +1,25 @@
 
 #include "initialize.h"
 
+using namespace global;
+
 void initialize()
 {
-	static global g;
-	init(&g);
-	loop(&g);
+	init();
+	loop();
 }
 
-void init(global* g)
+void init()
 {
 	initgraph(1080, 600, 1);
 
-	static UIManager		uiManager;
-	static event_manager	eventManager;
+	GetUIManager()->eventRegister(GetEventManager());
+	GetEventManager()->eventEmit(UI_NEXT);
 
-	uiManager.eventRegister(&eventManager);
-
-	eventManager.eventEmit(UI_NEXT);
-
-	g->init(&uiManager, &eventManager);
-
-	keyEvent(g);
+	keyEvent();
 }
 
-void loop(global* g)
+void loop()
 {
 	int timer = 0;
 
@@ -34,19 +29,19 @@ void loop(global* g)
 		if (timer > FRAMES)
 		{
 			timer = 0;
-			*g->update = true;
+			ChangeUpdate(true);
 		}
 
-		if (*g->update)
+		if (GetUpdate())
 		{
-			*g->update = false;
-			g->uiManager->getScene()->beforeEvent();
+			ChangeUpdate(false);
+			GetUIManager()->getScene()->beforeEvent();
 
 			BeginBatchDraw();
-			g->uiManager->getScene()->render();
+			GetUIManager()->getScene()->render();
 			EndBatchDraw();
 
-			g->uiManager->getScene()->afterEvent();
+			GetUIManager()->getScene()->afterEvent();
 		}
 	}
 }

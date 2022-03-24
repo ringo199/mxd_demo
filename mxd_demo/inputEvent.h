@@ -18,9 +18,11 @@
 #define	CMD_SPACE		0x100
 #define	CMD_BACK		0x200
 
-void keyEvent(global*);
+using namespace global;
+
+void keyEvent();
 DWORD WINAPI create_th(LPVOID);
-int  GetCommand();								// »ñÈ¡¿ØÖÆÃüÁî
-void DispatchCommand(int _cmd, global*);		// ·Ö·¢¿ØÖÆÃüÁî
+int  GetCommand();								// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void DispatchCommand(int _cmd);		            // ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 #endif

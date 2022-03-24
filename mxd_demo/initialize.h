@@ -13,8 +13,8 @@
 
 #define FRAMES 16
 
-void init(global*);
-void loop(global*);
+void init();
+void loop();
 void initialize();
 
 #endif

@@ -7,8 +7,6 @@
 
 #define GRAVITY 10;
 
-static bool s_update = false;
-
 enum e_scene_type
 {
 	LOADING = -2,
@@ -140,9 +138,9 @@ protected:
 
 	coord _coo;
 
-	// ÒýÓÃ×ø±ê
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	coord* _ref_coo;
-	// ÒýÓÃ×ø±êÓëÊµ¼Ê×ø±êµÄ²îÖµ£¨×óÉÏ½Ç£©
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ç£ï¿½
 	coord _off_coo;
 
 	bool _is_ref;
