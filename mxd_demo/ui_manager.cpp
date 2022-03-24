@@ -35,6 +35,8 @@ void UIManager::nextScene(void* ctx)
     }
     e_scene_type next_type = (e_scene_type)cur_size;
 
+    context->_loadingScene->show();
+    context->_is_loading = true;
     if (cur_size > 0)
     {
         context->hideScene();
@@ -42,6 +44,8 @@ void UIManager::nextScene(void* ctx)
     context->loadScene(next_type);
     context->_scene_types.push(next_type);
     context->showScene();
+    context->_is_loading = false;
+    context->_loadingScene->hide();
 }
 
 void UIManager::backScene(void* ctx)
@@ -53,9 +57,13 @@ void UIManager::backScene(void* ctx)
         return;
     }
 
+    context->_loadingScene->show();
+    context->_is_loading = true;
     context->hideScene();
     context->clearScene();
     context->showScene();
+    context->_is_loading = false;
+    context->_loadingScene->hide();
 }
 
 void UIManager::backHomeScene(void* ctx)
@@ -67,12 +75,16 @@ void UIManager::backHomeScene(void* ctx)
         return;
     }
 
+    context->_loadingScene->show();
+    context->_is_loading = true;
     for (int i = context->_scene_types.size() - 1; i > 0; i--)
     {
         context->hideScene((e_scene_type)i);
     }
 
     context->_sceneMap[(e_scene_type)0]->show();
+    context->_is_loading = false;
+    context->_loadingScene->hide();
     for(;;)
     {
         if (context->_scene_types.size() == 1)
@@ -100,8 +112,6 @@ void UIManager::endLoading(void* ctx)
 
 void UIManager::loadScene(e_scene_type type)
 {
-    this->_loadingScene->show();
-    this->_is_loading = true;
     switch (type)
     {
     case CHECK_MASTER_SERVER:
@@ -123,8 +133,6 @@ void UIManager::loadScene(e_scene_type type)
         break;
     }
     _sceneMap[type]->init();
-    this->_is_loading = false;
-    this->_loadingScene->hide();
 }
 
 void UIManager::showScene(e_scene_type type)
