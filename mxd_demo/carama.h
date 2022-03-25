@@ -36,13 +36,9 @@ private:
 class world_area : public area
 {
 public:
-	void set_carama(carama_info* carama);
-
 	coord* get_coord1();
 	coord* get_coord2();
 	coord* get_coord_center();
-private:
-	carama_info* _carama;
 };
 
 

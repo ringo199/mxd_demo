@@ -16,7 +16,6 @@ DWORD WINAPI create_th(LPVOID args)
 	}
 }
 
-// ��ȡ��������
 int GetCommand()
 {
 	int c = 0;
@@ -35,8 +34,7 @@ int GetCommand()
 	return c;
 }
 
-// �ַ���������
-void DispatchCommand(int _cmd, global* g)
+void DispatchCommand(int _cmd)
 {
 	if (_cmd & CMD_LSHI)
 	{

@@ -2,18 +2,16 @@
 #include "objects.h"
 #include "tools.h"
 
-object::object(carama_info* carama)
+object::object()
 {
-	this->_carama = carama;
 }
 
 object::~object()
 {
 }
 
-render_object::render_object(carama_info* carama)
+render_object::render_object()
 {
-	this->_render_area.set_carama(carama);
 	this->_render_base_point = NULL;
 }
 

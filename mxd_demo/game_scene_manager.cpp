@@ -1,21 +1,51 @@
 
 #include "game_scene_manager.h"
 
+#include "global.h"
+
+using namespace global;
+
 GameSceneManager::GameSceneManager()
 {
     this->_cur_game_scene_type = GAME_SCENE_NULL;
-    this->_event_manager = NULL;
-    this->_gameManager = new gameManager;
     this->_sceneMap = new map<e_game_scene_type, game_scene*>;
 }
 
 GameSceneManager::~GameSceneManager()
 {
+    this->clearScene();
+}
+
+void GameSceneManager::gotoScene(void* ctx, e_game_scene_type type)
+{
+    GameSceneManager *context = (GameSceneManager*)ctx;
+
+    GetEventManager()->eventEmit(UI_BEGIN_LOADING);
+
+    if (context->_cur_game_scene_type != GAME_SCENE_NULL)
+    {
+        context->hideScene();
+    }
+
+    context->loadScene(type);
+    context->showScene(type);
+
+    GetEventManager()->eventEmit(UI_END_LOADING);
+}
+
+void GameSceneManager::eventRegister()
+{
+    GetEventManager()->eventRegister(GAME_GOTO_SCENE, (long)&this->gotoScene, this);
+}
+
+void GameSceneManager::clearEventRegister()
+{
+    GetEventManager()->clearEvent(GAME_GOTO_SCENE);
+}
+
+void GameSceneManager::clearScene()
+{
     this->clearEventRegister();
-    this->_cur_game_scene_type = GAME_SCENE_NULL;
-    this->_event_manager = NULL;
-    delete this->_gameManager;
-    this->_gameManager = NULL;
 
     if (this->_sceneMap != NULL)
     {
@@ -27,33 +57,11 @@ GameSceneManager::~GameSceneManager()
             this->_sceneMap->erase(iter++);
         }
         this->_sceneMap->clear();
-        map<e_game_scene_type, game_scene*>().swap(*this->_sceneMap);
-        this->_sceneMap = NULL;
-    }
-}
-
-void GameSceneManager::gotoScene(void* ctx, e_game_scene_type type)
-{
-    GameSceneManager *context = (GameSceneManager*)ctx;
-
-    if (context->_cur_game_scene_type != GAME_SCENE_NULL)
-    {
-        context->hideScene();
+        //map<e_game_scene_type, game_scene*>().swap(*this->_sceneMap);
+        //this->_sceneMap = NULL;
     }
 
-    context->loadScene(type);
-    context->showScene(type);
-}
-
-void GameSceneManager::eventRegister(event_manager* event_manager)
-{
-    this->_event_manager = event_manager;
-    event_manager->eventRegister(GAME_GOTO_SCENE, (long)&this->gotoScene, this);
-}
-
-void GameSceneManager::clearEventRegister()
-{
-    this->_event_manager->clearEvent(GAME_GOTO_SCENE);
+    this->_cur_game_scene_type = GAME_SCENE_NULL;
 }
 
 game_scene* GameSceneManager::getGameScene()
@@ -65,22 +73,19 @@ void GameSceneManager::loadScene(e_game_scene_type type)
 {
     if ((*this->_sceneMap)[type] != NULL) return;
 
-    this->_event_manager->eventEmit(UI_BEGIN_LOADING);
-
     switch (type)
     {
     case GAME_1:
-        (*this->_sceneMap)[type] = new game_1(this->_event_manager, this->_gameManager);
+        (*this->_sceneMap)[type] = new game_1;
         break;
     case GAME_2:
-        (*this->_sceneMap)[type] = new game_2(this->_event_manager, this->_gameManager);
+        (*this->_sceneMap)[type] = new game_2;
         break;
     default:
         break;
     }
 
     (*this->_sceneMap)[type]->init();
-    this->_event_manager->eventEmit(UI_END_LOADING);
 }
 
 void GameSceneManager::showScene(e_game_scene_type type)

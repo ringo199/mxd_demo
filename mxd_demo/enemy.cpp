@@ -1,11 +1,16 @@
 
 #include "enemy.h"
 
+#include "global.h"
 
-old_enemy::old_enemy(carama_info* carama) : enemy(carama)
+using namespace global;
+
+
+old_enemy::old_enemy() : enemy()
 {
 	this->imgIndex = 4;
-	this->status = enemy_status::IDLE;
+	this->status = enemy_status::BIRTH;
+	this->sa_percent = 0.0f;
 	this->is_reverse = false;
 	this->speed = 3;
 	this->area_pad = 3;
@@ -13,13 +18,16 @@ old_enemy::old_enemy(carama_info* carama) : enemy(carama)
 	this->health = 30;
 	this->healthMax = 30;
 
+	this->imgEnemy = NULL;
+	this->is_hit = false;
+
 	this->startAttack();
 }
 
 old_enemy::~old_enemy()
 {
-	//delete this->imgEnemy;
-	//this->imgEnemy = NULL;
+	delete[] this->imgEnemy;
+	this->imgEnemy = NULL;
 }
 
 void old_enemy::init(int x, int y)
@@ -60,11 +68,17 @@ void old_enemy::animator()
 {
 	switch (this->status)
 	{
+	case enemy_status::BIRTH:
+		this->_birth();
+		break;
 	case enemy_status::IDLE:
 		this->imgIndex = 4;
 		break;
 	case enemy_status::RUN:
 		this->imgIndex = (this->imgIndex + 1) % 6;
+		break;
+	case enemy_status::DIE:
+		this->_die();
 		break;
 	default:
 		break;
@@ -79,6 +93,10 @@ void old_enemy::other_event()
 
 void old_enemy::ai()
 {
+	if (this->status == enemy_status::BIRTH)
+	{
+		return;
+	}
 	change_status();
 	move();
 }
@@ -120,7 +138,8 @@ void old_enemy::hit()
 	this->health -= 10;
 	if (this->health <= 0)
 	{
-		this->health = this->healthMax;
+		this->health = 0;
+		this->status = enemy_status::DIE;
 	}
 	playSound("res/atk.mp3");
 }
@@ -156,11 +175,45 @@ void old_enemy::hitting()
 
 void old_enemy::_load()
 {
+	char path[64];
 	for (int i = 0; i < 6; i++)
 	{
-		sprintf_s(this->path, "res/p%d.png", i + 1);
-		loadimage(&this->imgEnemy[i], this->path);
+		sprintf_s(path, "res/p%d.png", i + 1);
+		loadimage(&this->imgEnemy[i], path);
 	}
+}
+
+void old_enemy::_birth()
+{
+	static int count = 0;
+	static double x = 0.0;
+	++count;
+	if (count < 60)
+	{
+		return;
+	}
+	printf("_birth, %f\n", this->sa_percent);
+	this->sa_percent += 0.1f;
+	if (this->sa_percent >= 1.0f)
+	{
+		this->sa_percent = 1.0f;
+		this->status = enemy_status::IDLE;
+	}
+}
+
+void old_enemy::_die()
+{
+	this->sa_percent -= 0.1f;
+	if (this->sa_percent <= 0.0f)
+	{
+		this->_died();
+	}
+}
+
+void old_enemy::_died()
+{
+	GetGameManager()->delete_object(this);
+	delete this;
 }
 
 void old_enemy::_move()

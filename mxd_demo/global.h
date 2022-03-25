@@ -6,6 +6,8 @@
 #include "gameManager.h"
 #include "game_scene_manager.h"
 #include "event_manager.h"
+#include "carama.h"
+#include "collision.h"
 
 namespace global
 {
@@ -15,6 +17,8 @@ namespace global
 	UIManager* GetUIManager();
 	gameManager* GetGameManager();
 	GameSceneManager* GetGameSceneManager();
+	carama_info* GetCarama();
+	collision* GetCollision();
 }
 
 #endif

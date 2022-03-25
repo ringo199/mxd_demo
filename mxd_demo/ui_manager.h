@@ -6,9 +6,6 @@
 #include <stack>
 #include <map>
 #include "scene/ui_scene.h"
-#include "game_scene_manager.h"
-
-#include "event_manager.h"
 
 using namespace std;
 
@@ -42,8 +39,6 @@ private:
     void clearScene();
 
     bool _is_loading;
-
-    event_manager* _event_manager;
 };
 
 #endif

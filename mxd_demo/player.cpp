@@ -1,8 +1,11 @@
 
 #include "player.h"
 
+#include "global.h"
 
-player_info::player_info(carama_info* carama): player(carama)
+using namespace global;
+
+player_info::player_info(): player()
 {
 	this->status = player_status::IDLE;
 	this->imgIndex = 0;
@@ -16,8 +19,6 @@ player_info::player_info(carama_info* carama): player(carama)
 
 	this->health = 50;
 	this->healthMax = 50;
-
-	this->_event_manager = NULL;
 }
 
 player_info::~player_info()
@@ -90,7 +91,7 @@ void player_info::run(int is_right)
 	count = 0;
 	if (!this->is_runing)
 	{
-		s_update = true;
+		ChangeUpdate(true);
 	}
 	this->is_runing = true;
 	if (this->status == player_status::IDLE)
@@ -112,7 +113,7 @@ void player_info::updown(int is_down)
 	count = 0;
 	if (!this->is_runing)
 	{
-		s_update = true;
+		ChangeUpdate(true);
 	}
 	this->is_runing = true;
 	if (this->status == player_status::IDLE)
@@ -128,7 +129,7 @@ void player_info::jump()
 	{
 		this->v_y = -20;
 		this->is_runing = false;
-		s_update = true;
+		ChangeUpdate(true);
 		playSound("res/jump.mp3");
 		if (this->status != player_status::JUMP)
 		{
@@ -144,7 +145,7 @@ void player_info::attack()
 		this->startAttack();
 		this->imgIndex = 0;
 		this->is_runing = false;
-		s_update = true;
+		ChangeUpdate(true);
 	}
 	if (this->status != player_status::ATTACK)
 	{
@@ -266,25 +267,24 @@ void player_info::cancelRuning()
 	this->is_runing = false;
 }
 
-void player_info::eventRegister(event_manager* eventManager)
+void player_info::eventRegister()
 {
-	this->_event_manager = eventManager;
-	eventManager->eventRegister(GAME_CMD_LEFT, (long)&this->cmdLeftRun, this);
-	eventManager->eventRegister(GAME_CMD_RIGHT, (long)&this->cmdRightRun, this);
-	eventManager->eventRegister(GAME_CMD_UP, (long)&this->cmdUp, this);
-	eventManager->eventRegister(GAME_CMD_DOWN, (long)&this->cmdDown, this);
-	eventManager->eventRegister(GAME_CMD_JUMP, (long)&this->cmdJump, this);
-	eventManager->eventRegister(GAME_CMD_ATTACK, (long)&this->cmdAttack, this);
+	GetEventManager()->eventRegister(GAME_CMD_LEFT, (long)&this->cmdLeftRun, this);
+	GetEventManager()->eventRegister(GAME_CMD_RIGHT, (long)&this->cmdRightRun, this);
+	GetEventManager()->eventRegister(GAME_CMD_UP, (long)&this->cmdUp, this);
+	GetEventManager()->eventRegister(GAME_CMD_DOWN, (long)&this->cmdDown, this);
+	GetEventManager()->eventRegister(GAME_CMD_JUMP, (long)&this->cmdJump, this);
+	GetEventManager()->eventRegister(GAME_CMD_ATTACK, (long)&this->cmdAttack, this);
 }
 
 void player_info::clearEventRegister()
 {
-	this->_event_manager->clearEvent(GAME_CMD_LEFT);
-	this->_event_manager->clearEvent(GAME_CMD_RIGHT);
-	this->_event_manager->clearEvent(GAME_CMD_UP);
-	this->_event_manager->clearEvent(GAME_CMD_DOWN);
-	this->_event_manager->clearEvent(GAME_CMD_JUMP);
-	this->_event_manager->clearEvent(GAME_CMD_ATTACK);
+	GetEventManager()->clearEvent(GAME_CMD_LEFT);
+	GetEventManager()->clearEvent(GAME_CMD_RIGHT);
+	GetEventManager()->clearEvent(GAME_CMD_UP);
+	GetEventManager()->clearEvent(GAME_CMD_DOWN);
+	GetEventManager()->clearEvent(GAME_CMD_JUMP);
+	GetEventManager()->clearEvent(GAME_CMD_ATTACK);
 }
 
 void player_info::cmdUp(void* ctx)

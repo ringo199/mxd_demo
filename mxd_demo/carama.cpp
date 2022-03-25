@@ -124,21 +124,19 @@ void carama_info::mapCoord2CaramaCoora(coord incoo, coord* outcoo)
 }
 
 // world_area
+#include "global.h"
 
-void world_area::set_carama(carama_info* carama)
-{
-	this->_carama = carama;
-}
+using namespace global;
 
 coord* world_area::get_coord1()
 {
 	if (this->_is_ref)
 	{
-		this->_carama->mapCoord2CaramaCoora(*this->_ref_coo + this->_off_coo, &this->_real_coo1);
+		GetCarama()->mapCoord2CaramaCoora(*this->_ref_coo + this->_off_coo, &this->_real_coo1);
 	}
 	else
 	{
-		this->_carama->mapCoord2CaramaCoora(this->_coo, &this->_real_coo1);
+		GetCarama()->mapCoord2CaramaCoora(this->_coo, &this->_real_coo1);
 	}
 
 	return &this->_real_coo1;

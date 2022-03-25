@@ -19,8 +19,10 @@ public:
 
     static void gotoScene(void*, e_game_scene_type type);
 
-    void eventRegister(event_manager*);
+    void eventRegister();
     void clearEventRegister();
+
+    void clearScene();
 
     game_scene* getGameScene();
 
@@ -31,9 +33,6 @@ private:
     void loadScene(e_game_scene_type type);
     void showScene(e_game_scene_type type);
     void hideScene();
-
-    event_manager*                        _event_manager;
-    gameManager*                          _gameManager;
 };
 
 #endif

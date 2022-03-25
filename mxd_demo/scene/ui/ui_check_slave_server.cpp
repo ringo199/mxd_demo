@@ -2,8 +2,7 @@
 #include "ui_scene_base.h"
 #include "../../tools.h"
 
-ui_check_slave_server::ui_check_slave_server(event_manager* event_manager)
-    :ui_scene_base(event_manager)
+ui_check_slave_server::ui_check_slave_server()
 {
 }
 

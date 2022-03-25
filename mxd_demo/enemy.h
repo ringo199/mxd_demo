@@ -14,11 +14,14 @@
 class old_enemy : public enemy
 {
 public:
-	old_enemy(carama_info* carama);
+	old_enemy();
 	~old_enemy();
 
 	enum class enemy_status
 	{
+		BIRTH,
+		DIE,
+
 		IDLE,
 		RUN,
 
@@ -41,7 +44,6 @@ public:
 private:
 	int imgIndex;
 	IMAGE* imgEnemy;
-	char path[64];
 	enemy_status status;
 	bool is_reverse;
 	int speed;
@@ -54,5 +56,9 @@ private:
 
 	void _move();
 	void _load();
+
+	void _birth();
+	void _die();
+	void _died();
 };
 #endif

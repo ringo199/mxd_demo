@@ -9,12 +9,8 @@
 class game_scene_base : public scene_base
 {
 public:
-    game_scene_base(event_manager*, gameManager*);
+    game_scene_base();
     ~game_scene_base();
-
-protected:
-    event_manager* _event_manager;
-    gameManager* _gameManager;
 };
 
 typedef game_scene_base game_scene;
@@ -22,7 +18,7 @@ typedef game_scene_base game_scene;
 class game_1 : public game_scene_base
 {
 public:
-    game_1(event_manager*, gameManager*);
+    game_1();
     ~game_1();
 
     virtual void init() override final;
@@ -35,7 +31,6 @@ public:
     virtual void afterEvent() override final;
 
 private:
-    carama_info _carama;
     player_info* _player;
 
     IMAGE imgBG;
@@ -46,7 +41,7 @@ private:
 class game_2 : public game_scene_base
 {
 public:
-    game_2(event_manager*, gameManager*);
+    game_2();
     ~game_2();
 
     virtual void init() override final;
@@ -59,7 +54,6 @@ public:
     virtual void afterEvent() override final;
 
 private:
-    carama_info _carama;
     player_info* _player;
 
     IMAGE imgBG;

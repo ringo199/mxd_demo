@@ -62,38 +62,18 @@ void collision::graviry_check()
 	{
 		for (j = 0; j < this->_static_collsion_objects.size(); ++j)
 		{
-			//testDrawBar(this->_static_collsion_objects[j]->get_collsion_area());
-			//testDrawBar(this->_dynamic_collsion_objects[i]->get_ground_check_area());
-
 			if (rectIntersect(
-				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->x,
-				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->y,
-				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord2_in_world()->x,
-				this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord2_in_world()->y,
-
-				this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->x,
-				this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->y,
-				this->_static_collsion_objects[j]->get_collsion_area()->get_coord2_in_world()->x,
-				this->_static_collsion_objects[j]->get_collsion_area()->get_coord2_in_world()->y
+				this->_dynamic_collsion_objects[i]->get_ground_check_area(),
+				this->_static_collsion_objects[j]->get_collsion_area()
 			))
 			{
-				//printf("s: x: %d, y: %d, w, %d, h: %d\nd: x: %d, y: %d, w, %d, h: %d\n",
-				//	this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->x,
-				//	this->_static_collsion_objects[j]->get_collsion_area()->get_coord1_in_world()->y,
-				//	this->_static_collsion_objects[j]->get_collsion_area()->get_width(),
-				//	this->_static_collsion_objects[j]->get_collsion_area()->get_height(),
-				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->x,
-				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_coord1_in_world()->y,
-				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_width(),
-				//	this->_dynamic_collsion_objects[i]->get_ground_check_area()->get_height()
-				//);
 				this->_dynamic_collsion_objects[i]->is_on_ground = true;
 				break;
 			}
-			if (j >= this->_static_collsion_objects.size())
-			{
-				this->_dynamic_collsion_objects[i]->is_on_ground = false;
-			}
+		}
+		if (j >= this->_static_collsion_objects.size())
+		{
+			this->_dynamic_collsion_objects[i]->is_on_ground = false;
 		}
 	}
 	/*vector<static_collsion_object*>::iterator s_it;

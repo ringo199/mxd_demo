@@ -1,8 +1,13 @@
 
 #include "gameManager.h"
+#include "global.h"
+
+using namespace global;
+
 
 gameManager::gameManager()
 {
+	this->_col = GetCollision();
 }
 
 gameManager::~gameManager()
@@ -38,7 +43,7 @@ void gameManager::clear_objects()
 	vector<animator_*>().swap(this->_animators);
 	vector<other_event_*>().swap(this->_other_events);
 
-	this->_col.clear_objects();
+	GetCollision()->clear_objects();
 }
 
 void gameManager::_hit()
@@ -72,9 +77,9 @@ void gameManager::_hit()
 
 void gameManager::_collision_event()
 {
-	//this->_col.graviry_check();
-	//this->_col.graviry_force();
-	this->_col.rigidbody_check();
+	GetCollision()->graviry_check();
+	GetCollision()->graviry_force();
+	GetCollision()->rigidbody_check();
 }
 
 void gameManager::_animator()

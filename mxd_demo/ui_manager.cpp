@@ -7,7 +7,6 @@ UIManager::UIManager()
     static ui_loading loading;
     this->_loadingScene = &loading;
     this->_is_loading = false;
-    this->_event_manager = NULL;
 }
 
 UIManager::~UIManager()
@@ -16,7 +15,6 @@ UIManager::~UIManager()
 
 void UIManager::eventRegister(event_manager* event_manager)
 {
-    this->_event_manager = event_manager;
     event_manager->eventRegister(UI_NEXT, (long)&this->nextScene, this);
     event_manager->eventRegister(UI_BACK, (long)&this->backScene, this);
     event_manager->eventRegister(UI_BACKHOME, (long)&this->backHomeScene, this);
@@ -26,7 +24,7 @@ void UIManager::eventRegister(event_manager* event_manager)
 
 void UIManager::nextScene(void* ctx)
 {
-    UIManager *context = (UIManager*)ctx;
+    UIManager* context = (UIManager*)ctx;
     int cur_size = context->_scene_types.size();
     if (cur_size == UI_COUNT)
     {
@@ -50,7 +48,7 @@ void UIManager::nextScene(void* ctx)
 
 void UIManager::backScene(void* ctx)
 {
-    UIManager *context = (UIManager*)ctx;
+    UIManager* context = (UIManager*)ctx;
     if (context->_scene_types.size() < 2)
     {
         printf("is home!!\n");
@@ -68,7 +66,7 @@ void UIManager::backScene(void* ctx)
 
 void UIManager::backHomeScene(void* ctx)
 {
-    UIManager *context = (UIManager*)ctx;
+    UIManager* context = (UIManager*)ctx;
     if (context->_scene_types.size() < 2)
     {
         printf("is home!!\n");
@@ -85,7 +83,7 @@ void UIManager::backHomeScene(void* ctx)
     context->_sceneMap[(e_scene_type)0]->show();
     context->_is_loading = false;
     context->_loadingScene->hide();
-    for(;;)
+    for (;;)
     {
         if (context->_scene_types.size() == 1)
         {
@@ -98,14 +96,14 @@ void UIManager::backHomeScene(void* ctx)
 
 void UIManager::beginLoading(void* ctx)
 {
-    UIManager *context = (UIManager*)ctx;
+    UIManager* context = (UIManager*)ctx;
     context->_loadingScene->show();
     context->_is_loading = true;
 }
 
 void UIManager::endLoading(void* ctx)
 {
-    UIManager *context = (UIManager*)ctx;
+    UIManager* context = (UIManager*)ctx;
     context->_is_loading = false;
     context->_loadingScene->hide();
 }
@@ -115,19 +113,19 @@ void UIManager::loadScene(e_scene_type type)
     switch (type)
     {
     case CHECK_MASTER_SERVER:
-        _sceneMap[type] = new ui_check_master_server(this->_event_manager);
+        _sceneMap[type] = new ui_check_master_server;
         break;
     case LOGIN:
-        _sceneMap[type] = new ui_login(this->_event_manager);
+        _sceneMap[type] = new ui_login;
         break;
     case CHECK_SLAVE_SERVER:
-        _sceneMap[type] = new ui_check_slave_server(this->_event_manager);
+        _sceneMap[type] = new ui_check_slave_server;
         break;
     case CHECK_PLAYER:
-        _sceneMap[type] = new ui_check_player(this->_event_manager);
+        _sceneMap[type] = new ui_check_player;
         break;
     case GAME:
-        _sceneMap[type] = new ui_game(this->_event_manager);
+        _sceneMap[type] = new ui_game;
         break;
     default:
         break;

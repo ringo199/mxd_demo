@@ -22,7 +22,7 @@ using namespace global;
 
 void keyEvent();
 DWORD WINAPI create_th(LPVOID);
-int  GetCommand();								// ��ȡ��������
-void DispatchCommand(int _cmd);		            // �ַ���������
+int  GetCommand();
+void DispatchCommand(int _cmd);
 
 #endif

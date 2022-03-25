@@ -1,9 +1,11 @@
 
 #include "game_scene_base.h"
 
+#include "../../global.h"
 
-game_2::game_2(event_manager* eventManager, gameManager* game_manager)
-	: game_scene_base(eventManager, game_manager)
+using namespace global;
+
+game_2::game_2()
 {
 	this->_player = NULL;
 	this->_enemy = NULL;
@@ -12,16 +14,17 @@ game_2::game_2(event_manager* eventManager, gameManager* game_manager)
 
 game_2::~game_2()
 {
+	this->clear();
 }
 
 void game_2::init()
 {
 	area map(0, 0, 1500, 1000);
-	this->_carama.init(map.get_width(), map.get_height(), getwidth(), getheight());
+	GetCarama()->init(map.get_width(), map.get_height(), getwidth(), getheight());
 
-	this->_player = new player_info(&_carama);
-	this->_enemy = new old_enemy(&_carama);
-	this->_blockList = new block[5]{ &_carama, &_carama, &_carama, &_carama, &_carama };
+	this->_player = new player_info;
+	this->_enemy = new old_enemy;
+	this->_blockList = new block[5];
 
 	_player->init(1000, 600);
 
@@ -33,31 +36,39 @@ void game_2::init()
 	_blockList[3].init(200, 300, 300, 20);
 	_blockList[4].init(500, 500, 20, 100);
 
-	this->_carama.setCenterPoint(_player->get_base_area()->get_coord_base());
-
 	loadimage(&this->imgBG, "res/bark/bg.png", map.get_width(), map.get_height(), true);
 }
 
 void game_2::show()
 {
-	_player->eventRegister(this->_event_manager);
+	//mciSendString("play res/bg.mp3 repeat", 0, 0, 0);
+	//preLoadSound("res/atk.mp3");
+	//preLoadSound("res/jump.mp3");
 
-	this->_gameManager->push_object(_player);
-	this->_gameManager->push_object(_enemy);
+	GetCarama()->setCenterPoint(_player->get_base_area()->get_coord_base());
+
+	_player->eventRegister();
+
+	GetGameManager()->push_object(_player);
+	GetGameManager()->push_object(_enemy);
 
 	for (int i = 0; i < 5; i++)
 	{
-		this->_gameManager->push_object(&this->_blockList[i]);
+		GetGameManager()->push_object(&this->_blockList[i]);
 	}
 }
 
 void game_2::hide()
 {
-	this->_gameManager->clear_objects();
+	GetGameManager()->clear_objects();
+
+	_player->clearEventRegister();
 }
 
 void game_2::clear()
 {
+	this->hide();
+
 	delete this->_player;
 	this->_player = NULL;
 	delete this->_enemy;
@@ -68,19 +79,19 @@ void game_2::clear()
 
 void game_2::beforeEvent()
 {
-	this->_gameManager->beforeEvent();
-	this->_carama.changeCenterPoint();
+	GetGameManager()->beforeEvent();
+	GetCarama()->changeCenterPoint();
 }
 
 void game_2::render()
 {
 	int ox, oy;
-	this->_carama.mapCoord2CaramaCoora(0, 0, &ox, &oy);
+	GetCarama()->mapCoord2CaramaCoora(0, 0, &ox, &oy);
 	putimage(ox, oy, &this->imgBG);
-	this->_gameManager->render();
+	GetGameManager()->render();
 }
 
 void game_2::afterEvent()
 {
-	this->_gameManager->afterEvent();
+	GetGameManager()->afterEvent();
 }

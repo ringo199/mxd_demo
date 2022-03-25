@@ -9,7 +9,7 @@
 class object
 {
 public:
-	object(carama_info* carama);
+	object();
 	~object();
 	world_area* get_base_area() { return &this->_base_area; };
 
@@ -35,19 +35,18 @@ public:
 
 protected:
 	world_area _base_area;
-	carama_info* _carama;
 };
 
 class static_object : public object
 {
 public:
-	static_object(carama_info* carama) : object(carama) {}
+	static_object() : object() {}
 };
 
 class dynamic_object : public object
 {
 public:
-	dynamic_object(carama_info* carama) : object(carama) {}
+	dynamic_object() : object() {}
 
 	void changeCoord(coord coo)
 	{
@@ -88,7 +87,7 @@ public:
 class render_object
 {
 public:
-	render_object(carama_info* carama);
+	render_object();
 	~render_object();
 	world_area* get_render_area();
 
@@ -117,9 +116,8 @@ protected:
 class collsion_object
 {
 public:
-	collsion_object(carama_info* carama)
+	collsion_object()
 	{
-		this->_collsion_area.set_carama(carama);
 		this->_collsion_base_point = NULL;
 	}
 	~collsion_object()
@@ -150,9 +148,8 @@ protected:
 class hit_object
 {
 public:
-	hit_object(carama_info* carama)
+	hit_object()
 	{
-		this->_hit_area.set_carama(carama);
 		this->_is_hit = false;
 		this->hit_time = 1500;
 		this->_hit_cur_tick_count = getTickCount();
@@ -219,9 +216,8 @@ protected:
 class attack_object
 {
 public:
-	attack_object(carama_info* carama)
+	attack_object()
 	{
-		this->_attack_area.set_carama(carama);
 		this->_is_attack = false;
 		this->_attack_base_point = NULL;
 	}
@@ -258,9 +254,8 @@ protected:
 class health_object
 {
 public:
-	health_object(carama_info* carama)
+	health_object()
 	{
-		this->_health_area.set_carama(carama);
 		this->_health_base_point = NULL;
 	}
 	~health_object()
@@ -291,9 +286,8 @@ protected:
 class ground_check_object
 {
 public:
-	ground_check_object(carama_info* carama)
+	ground_check_object()
 	{
-		this->_ground_check_area.set_carama(carama);
 		this->_ground_check_base_point = NULL;
 	}
 	~ground_check_object()
@@ -342,9 +336,9 @@ class static_collsion_object : public static_object,
 	public collsion_object
 {
 public:
-	static_collsion_object(carama_info* carama) :
-		static_object(carama),
-		collsion_object(carama)
+	static_collsion_object() :
+		static_object(),
+		collsion_object()
 	{}
 };
 
@@ -353,10 +347,10 @@ class dynamic_collsion_object : public dynamic_object,
 	public ground_check_object
 {
 public:
-	dynamic_collsion_object(carama_info* carama) :
-		dynamic_object(carama),
-		collsion_object(carama),
-		ground_check_object(carama)
+	dynamic_collsion_object() :
+		dynamic_object(),
+		collsion_object(),
+		ground_check_object()
 	{}
 };
 
@@ -365,9 +359,9 @@ public:
 class block : public static_collsion_object, public render_object
 {
 public:
-	block(carama_info* carama) :
-		static_collsion_object(carama),
-		render_object(carama)
+	block() :
+		static_collsion_object(),
+		render_object()
 	{}
 
 	void init(int x, int y, int w, int h)
@@ -394,10 +388,10 @@ class sprite_object : public dynamic_collsion_object,
 	public other_event_
 {
 public:
-	sprite_object(carama_info* carama) :
-		dynamic_collsion_object(carama),
-		render_object(carama),
-		hit_object(carama)
+	sprite_object() :
+		dynamic_collsion_object(),
+		render_object(),
+		hit_object()
 	{}
 };
 
@@ -405,9 +399,9 @@ class player : public sprite_object,
 	public attack_object
 {
 public:
-	player(carama_info* carama) :
-		sprite_object(carama),
-		attack_object(carama)
+	player() :
+		sprite_object(),
+		attack_object()
 	{}
 };
 
@@ -416,10 +410,10 @@ class enemy : public sprite_object,
 	public health_object
 {
 public:
-	enemy(carama_info* carama) :
-		sprite_object(carama),
-		attack_object(carama),
-		health_object(carama)
+	enemy() :
+		sprite_object(),
+		attack_object(),
+		health_object()
 	{}
 };
 

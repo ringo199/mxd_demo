@@ -29,6 +29,19 @@ public:
 
 	void clear_objects();
 
+	template<typename T>
+	void delete_one_in_vector(T* obj, vector<T*>* objs)
+	{
+		typename vector<T*>::iterator it;
+		for (it = objs->begin(); it != objs->end(); it++)
+		{
+			if (*it == obj)
+			{
+				objs->erase(it);
+			}
+		}
+	}
+
 	void push_dynamic_collsion_object(dynamic_collsion_object* obj)
 	{
 		this->_dynamic_collsion_objects.push_back(obj);
@@ -37,6 +50,16 @@ public:
 	void push_static_collsion_object(static_collsion_object* obj)
 	{
 		this->_static_collsion_objects.push_back(obj);
+	}
+
+	void delete_dynamic_collsion_object(dynamic_collsion_object* obj)
+	{
+		this->delete_one_in_vector(obj, &this->_dynamic_collsion_objects);
+	}
+
+	void delete_static_collsion_object(static_collsion_object* obj)
+	{
+		this->delete_one_in_vector(obj, &this->_static_collsion_objects);
 	}
 
 	// todo:

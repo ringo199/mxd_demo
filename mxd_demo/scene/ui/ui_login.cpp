@@ -2,8 +2,7 @@
 #include "ui_scene_base.h"
 #include "../../tools.h"
 
-ui_login::ui_login(event_manager* event_manager)
-    :ui_scene_base(event_manager)
+ui_login::ui_login()
 {
 }
 

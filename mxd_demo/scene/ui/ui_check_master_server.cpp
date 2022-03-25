@@ -3,8 +3,7 @@
 #include "../../tools.h"
 #include "../../var.h"
 
-ui_check_master_server::ui_check_master_server(event_manager* event_manager)
-    :ui_scene_base(event_manager)
+ui_check_master_server::ui_check_master_server()
 {
 }
 

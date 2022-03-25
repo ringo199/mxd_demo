@@ -15,7 +15,7 @@
 class player_info : public player
 {
 public:
-	player_info(carama_info* carama);
+	player_info();
 	~player_info();
 
 	enum class player_status
@@ -46,7 +46,7 @@ public:
 	void checkIsRuning();
 	void cancelRuning();
 
-	void eventRegister(event_manager*);
+	void eventRegister();
 	void clearEventRegister();
 
 	static void cmdUp(void*);
@@ -76,8 +76,6 @@ private:
 
 	void _load();
 	void _move(coord coo);
-
-	event_manager* _event_manager;
 };
 
 #endif
