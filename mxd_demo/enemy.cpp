@@ -5,7 +5,6 @@
 
 using namespace global;
 
-
 old_enemy::old_enemy() : enemy()
 {
 	this->imgIndex = 4;
@@ -37,18 +36,20 @@ void old_enemy::init(int x, int y)
 	this->_load();
 
 	this->initObject(coord(x, y),
-		this->imgEnemy[0].getwidth(), this->imgEnemy[0].getheight());
+					 this->imgEnemy[0].getwidth(), this->imgEnemy[0].getheight());
 	this->setRenderArea(this);
 	this->setCollsionArea(this);
 	this->setAttackArea(this, coord(this->area_pad, this->area_pad),
-		this->get_base_area()->get_width() - this->area_pad * 2,
-		this->get_base_area()->get_height() - this->area_pad);
+						this->get_base_area()->get_width() - this->area_pad * 2,
+						this->get_base_area()->get_height() - this->area_pad);
 	this->setHitArea(this, coord(this->area_pad, this->area_pad),
-		this->get_base_area()->get_width() - this->area_pad * 2,
-		this->get_base_area()->get_height() - this->area_pad);
+					 this->get_base_area()->get_width() - this->area_pad * 2,
+					 this->get_base_area()->get_height() - this->area_pad);
 	this->setHealthArea(this, coord(0, -15), this->get_base_area()->get_width(), 10);
 
 	this->setGroundCheckArea(this);
+	this->setAnimator(this);
+	this->setOtherEvent(this);
 }
 
 void old_enemy::render()
@@ -69,7 +70,12 @@ void old_enemy::animator()
 	switch (this->status)
 	{
 	case enemy_status::BIRTH:
-		this->_birth();
+		this->sa_percent += 0.05f;
+		if (this->sa_percent >= 1.0f)
+		{
+			this->sa_percent = 1.0f;
+			this->status = enemy_status::IDLE;
+		}
 		break;
 	case enemy_status::IDLE:
 		this->imgIndex = 4;
@@ -78,8 +84,11 @@ void old_enemy::animator()
 		this->imgIndex = (this->imgIndex + 1) % 6;
 		break;
 	case enemy_status::DIE:
-		this->_die();
-		break;
+		this->sa_percent -= 0.05f;
+		if (this->sa_percent <= 0.0f)
+		{
+			this->_died();
+		}
 	default:
 		break;
 	}
@@ -93,29 +102,33 @@ void old_enemy::other_event()
 
 void old_enemy::ai()
 {
-	if (this->status == enemy_status::BIRTH)
-	{
-		return;
-	}
 	change_status();
 	move();
 }
 
 void old_enemy::change_status()
 {
-	static int count = 0;
-	++count;
-	if (count < 30)
+	if (getTickCount() - this->_change_status_timer < this->_change_status_timer_const)
 	{
 		return;
 	}
-	count = 0;
 
-	bool isIdle = this->status == enemy_status::IDLE;
-	this->status = (enemy_status)(rand() % (int)(enemy_status::COUNT));
-	if (this->status == enemy_status::RUN && isIdle)
+	this->_change_status_timer = getTickCount();
+
+	enemy_status beforeStatus = this->status;
+
+	switch (this->status)
 	{
-		this->is_reverse = (rand() % 2) >= 1;
+	case enemy_status::IDLE:
+	case enemy_status::RUN:
+		this->status = (enemy_status)(rand() % 2 + (int)enemy_status::IDLE);
+		if (this->status == enemy_status::RUN && beforeStatus == enemy_status::IDLE)
+		{
+			this->is_reverse = (rand() % 2) >= 1;
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -141,27 +154,32 @@ void old_enemy::hit()
 		this->health = 0;
 		this->status = enemy_status::DIE;
 	}
+	this->_hitting_angle = 0;
 	playSound("res/atk.mp3");
 }
 
 void old_enemy::hitting()
 {
-	static int count = 0;
-	static double x = 0.0;
-	++count;
-	if (count < 3)
+	if (this->status == enemy_status::BIRTH || this->status == enemy_status::DIE)
 	{
 		return;
 	}
-	count = 0;
-	x += 2.0;
-	if (x >= 360.0)
+
+	if (getTickCount() - this->_hitting_timer < this->_hitting_timer_const)
 	{
-		x = 0.0;
+		return;
+	}
+
+	this->_hitting_timer = getTickCount();
+
+	this->_hitting_angle += 2;
+	if (this->_hitting_angle >= 360)
+	{
+		this->_hitting_angle = 0;
 	}
 	if (this->getIsHit())
 	{
-		this->sa_percent = cos(x);
+		this->sa_percent = cos(this->_hitting_angle);
 		if (this->sa_percent < 0)
 		{
 			this->sa_percent *= -1;
@@ -171,6 +189,13 @@ void old_enemy::hitting()
 	{
 		this->sa_percent = 1.0;
 	}
+}
+
+void old_enemy::CreateEnemy(int x, int y)
+{
+	old_enemy *ep = new old_enemy;
+	ep->init(x, y);
+	GetObjectManager()->push_object(ep);
 }
 
 void old_enemy::_load()
@@ -183,36 +208,10 @@ void old_enemy::_load()
 	}
 }
 
-void old_enemy::_birth()
-{
-	static int count = 0;
-	static double x = 0.0;
-	++count;
-	if (count < 60)
-	{
-		return;
-	}
-	printf("_birth, %f\n", this->sa_percent);
-	this->sa_percent += 0.1f;
-	if (this->sa_percent >= 1.0f)
-	{
-		this->sa_percent = 1.0f;
-		this->status = enemy_status::IDLE;
-	}
-}
-
-void old_enemy::_die()
-{
-	this->sa_percent -= 0.1f;
-	if (this->sa_percent <= 0.0f)
-	{
-		this->_died();
-	}
-}
-
 void old_enemy::_died()
 {
-	GetGameManager()->delete_object(this);
+	this->status = enemy_status::DIED;
+	GetObjectManager()->delete_object(this);
 	delete this;
 }
 

@@ -5,7 +5,7 @@
 
 using namespace global;
 
-player_info::player_info(): player()
+player_info::player_info() : player()
 {
 	this->status = player_status::IDLE;
 	this->imgIndex = 0;
@@ -31,26 +31,28 @@ void player_info::init(int x, int y)
 	this->_load();
 
 	this->initObject(coord(x, y),
-		this->imgPlayer[0].getwidth(), this->imgPlayer[0].getheight());
+					 this->imgPlayer[0].getwidth(), this->imgPlayer[0].getheight());
 
 	this->setRenderArea(this);
 
 	this->setCollsionArea(this);
-		//coord(this->area_pad, this->area_pad),
-		//this->get_render_area()->get_width() - 2 * this->area_pad,
-		//this->get_render_area()->get_height() - this->area_pad);
+	//coord(this->area_pad, this->area_pad),
+	//this->get_render_area()->get_width() - 2 * this->area_pad,
+	//this->get_render_area()->get_height() - this->area_pad);
 
 	this->setHitArea(this,
-		coord(this->area_pad, this->area_pad),
-		this->get_render_area()->get_width() - 2 * this->area_pad,
-		this->get_render_area()->get_height() - this->area_pad);
+					 coord(this->area_pad, this->area_pad),
+					 this->get_render_area()->get_width() - 2 * this->area_pad,
+					 this->get_render_area()->get_height() - this->area_pad);
 
 	this->setAttackArea(this,
-		coord(this->area_pad + this->get_render_area()->get_width(), this->area_pad),
-		this->area_atk_x,
-		this->get_render_area()->get_height() - 2 * this->area_pad);
+						coord(this->area_pad + this->get_render_area()->get_width(), this->area_pad),
+						this->area_atk_x,
+						this->get_render_area()->get_height() - 2 * this->area_pad);
 
 	this->setGroundCheckArea(this);
+	this->setAnimator(this);
+	this->setOtherEvent(this);
 }
 
 void player_info::_load()
@@ -84,7 +86,7 @@ void player_info::run(int is_right)
 {
 	static int count = 0;
 	++count;
-	if (count < 400)
+	if (count < 100)
 	{
 		return;
 	}
@@ -221,6 +223,10 @@ void player_info::animator()
 		this->imgIndex = (this->imgIndex + 1) % 12;
 		break;
 	case player_status::JUMP:
+		if (this->is_on_ground)
+		{
+			this->status = player_status::IDLE;
+		}
 		break;
 	case player_status::ATTACK:
 		this->attacking();
@@ -275,6 +281,7 @@ void player_info::eventRegister()
 	GetEventManager()->eventRegister(GAME_CMD_DOWN, (long)&this->cmdDown, this);
 	GetEventManager()->eventRegister(GAME_CMD_JUMP, (long)&this->cmdJump, this);
 	GetEventManager()->eventRegister(GAME_CMD_ATTACK, (long)&this->cmdAttack, this);
+	GetEventManager()->eventRegister(GAME_CMD_STAY, (long)&this->cmdStay, this);
 }
 
 void player_info::clearEventRegister()
@@ -285,42 +292,54 @@ void player_info::clearEventRegister()
 	GetEventManager()->clearEvent(GAME_CMD_DOWN);
 	GetEventManager()->clearEvent(GAME_CMD_JUMP);
 	GetEventManager()->clearEvent(GAME_CMD_ATTACK);
+	GetEventManager()->clearEvent(GAME_CMD_STAY);
 }
 
-void player_info::cmdUp(void* ctx)
+void player_info::cmdUp(void *ctx)
 {
-	player_info* context = (player_info*)ctx;
-	context->updown(-1);
+	player_info *context = (player_info *)ctx;
+	//context->updown(-1);
+
+	GetObjectManager()->delivery(context->get_collsion_area());
 }
 
-void player_info::cmdDown(void* ctx)
+void player_info::cmdDown(void *ctx)
 {
-	player_info* context = (player_info*)ctx;
-	context->updown(1);
+	player_info *context = (player_info *)ctx;
+	//context->updown(1);
 }
 
-void player_info::cmdLeftRun(void* ctx)
+void player_info::cmdLeftRun(void *ctx)
 {
-	player_info* context = (player_info*)ctx;
+	player_info *context = (player_info *)ctx;
 	context->run(-1);
 }
 
-void player_info::cmdRightRun(void* ctx)
+void player_info::cmdRightRun(void *ctx)
 {
-	player_info* context = (player_info*)ctx;
+	player_info *context = (player_info *)ctx;
 	context->run(1);
 }
 
-void player_info::cmdJump(void* ctx)
+void player_info::cmdJump(void *ctx)
 {
-	player_info* context = (player_info*)ctx;
+	player_info *context = (player_info *)ctx;
 	context->jump();
 }
 
-void player_info::cmdAttack(void* ctx)
+void player_info::cmdAttack(void *ctx)
 {
-	player_info* context = (player_info*)ctx;
+	player_info *context = (player_info *)ctx;
 	context->attack();
+}
+
+void player_info::cmdStay(void *ctx)
+{
+	player_info *context = (player_info *)ctx;
+	if (context->status == player_status::RUN)
+	{
+		context->status = player_status::IDLE;
+	}
 }
 
 void player_info::renderHP()

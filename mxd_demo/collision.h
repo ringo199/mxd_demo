@@ -29,19 +29,6 @@ public:
 
 	void clear_objects();
 
-	template<typename T>
-	void delete_one_in_vector(T* obj, vector<T*>* objs)
-	{
-		typename vector<T*>::iterator it;
-		for (it = objs->begin(); it != objs->end(); it++)
-		{
-			if (*it == obj)
-			{
-				objs->erase(it);
-			}
-		}
-	}
-
 	void push_dynamic_collsion_object(dynamic_collsion_object* obj)
 	{
 		this->_dynamic_collsion_objects.push_back(obj);
@@ -52,14 +39,28 @@ public:
 		this->_static_collsion_objects.push_back(obj);
 	}
 
-	void delete_dynamic_collsion_object(dynamic_collsion_object* obj)
+	void delete_dynamic_collsion_object(dynamic_collsion_object* obj, object* base_point)
 	{
-		this->delete_one_in_vector(obj, &this->_dynamic_collsion_objects);
+		for (int i = 0; i < this->_dynamic_collsion_objects.size(); ++i)
+		{
+			if (obj->_collsion_base_point == this->_dynamic_collsion_objects[i]->_collsion_base_point)
+			{
+				this->_dynamic_collsion_objects.erase(this->_dynamic_collsion_objects.begin() + i);
+				break;
+			}
+		}
 	}
 
-	void delete_static_collsion_object(static_collsion_object* obj)
+	void delete_static_collsion_object(static_collsion_object* obj, object* base_point)
 	{
-		this->delete_one_in_vector(obj, &this->_static_collsion_objects);
+		for (int i = 0; i < this->_static_collsion_objects.size(); ++i)
+		{
+			if (obj->_collsion_base_point == this->_static_collsion_objects[i]->_collsion_base_point)
+			{
+				this->_static_collsion_objects.erase(this->_static_collsion_objects.begin() + i);
+				break;
+			}
+		}
 	}
 
 	// todo:

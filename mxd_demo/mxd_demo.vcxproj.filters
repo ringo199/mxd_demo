@@ -45,7 +45,7 @@
     <ClInclude Include="objects.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="gameManager.h">
+    <ClInclude Include="objectManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="scene\game\game_scene_base.h">
@@ -70,6 +70,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ui_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mouseEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_objects.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_objectManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +116,7 @@
     <ClCompile Include="objects.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="gameManager.cpp">
+    <ClCompile Include="objectManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="scene\game\game_1.cpp">
@@ -150,6 +159,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ui_manager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mouseEvent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_objects.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_objectManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

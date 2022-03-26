@@ -6,7 +6,7 @@
 #include <map>
 #include "scene/game_scene.h"
 #include "event_manager.h"
-#include "gameManager.h"
+#include "objectManager.h"
 #include <malloc.h>
 
 using namespace std;

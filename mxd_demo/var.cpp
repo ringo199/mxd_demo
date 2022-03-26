@@ -185,3 +185,42 @@ int area::get_height()
 {
 	return this->_h;
 }
+
+// world_area
+#include "global.h"
+
+using namespace global;
+
+coord* world_area::get_coord1()
+{
+	if (this->_is_ref)
+	{
+		GetCarama()->mapCoord2CaramaCoora(*this->_ref_coo + this->_off_coo, &this->_real_coo1);
+	}
+	else
+	{
+		GetCarama()->mapCoord2CaramaCoora(this->_coo, &this->_real_coo1);
+	}
+
+	return &this->_real_coo1;
+}
+
+coord* world_area::get_coord2()
+{
+	this->_real_coo2 = *this->get_coord1();
+
+	this->_real_coo2.x += this->_w;
+	this->_real_coo2.y += this->_h;
+
+	return &this->_real_coo2;
+}
+
+coord* world_area::get_coord_center()
+{
+	this->_real_coo_center = *this->get_coord1();
+
+	this->_real_coo_center.x += this->_w * 0.5;
+	this->_real_coo_center.y += this->_h * 0.5;
+
+	return &this->_real_coo_center;
+}

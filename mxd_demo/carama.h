@@ -33,13 +33,5 @@ private:
 	coord* _carama_center_point;
 };
 
-class world_area : public area
-{
-public:
-	coord* get_coord1();
-	coord* get_coord2();
-	coord* get_coord_center();
-};
-
 
 #endif

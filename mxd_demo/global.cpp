@@ -6,12 +6,13 @@ namespace global
 	static bool s_update = false;
 
 	static event_manager* s_event_manager = NULL;
-	static UIManager* s_ui_manager = NULL;
-	static gameManager* s_game_manager = NULL;
-	static GameSceneManager* s_game_scene_manager = NULL;
-	static carama_info* s_carama = NULL;
-	static collision* s_collision = NULL;
-	
+	static UIManager *s_ui_manager = NULL;
+	static objectManager *s_object_manager = NULL;
+	static GameSceneManager *s_game_scene_manager = NULL;
+	static carama_info *s_carama = NULL;
+	static collision *s_collision = NULL;
+	static UIObjectManager* s_ui_object_manager = NULL;
+
 	bool GetUpdate()
 	{
 		return s_update;
@@ -22,7 +23,7 @@ namespace global
 		s_update = update;
 	}
 
-	event_manager* GetEventManager()
+	event_manager *GetEventManager()
 	{
 		if (s_event_manager == NULL)
 		{
@@ -32,7 +33,7 @@ namespace global
 		return s_event_manager;
 	}
 
-	UIManager* GetUIManager()
+	UIManager *GetUIManager()
 	{
 		if (s_ui_manager == NULL)
 		{
@@ -42,17 +43,17 @@ namespace global
 		return s_ui_manager;
 	}
 
-	gameManager* GetGameManager()
+	objectManager *GetObjectManager()
 	{
-		if (s_game_manager == NULL)
+		if (s_object_manager == NULL)
 		{
-			s_game_manager = new gameManager;
+			s_object_manager = new objectManager;
 		}
 
-		return s_game_manager;
+		return s_object_manager;
 	}
 
-	GameSceneManager* GetGameSceneManager()
+	GameSceneManager *GetGameSceneManager()
 	{
 		if (s_game_scene_manager == NULL)
 		{
@@ -62,7 +63,7 @@ namespace global
 		return s_game_scene_manager;
 	}
 
-	carama_info* GetCarama()
+	carama_info *GetCarama()
 	{
 		if (s_carama == NULL)
 		{
@@ -72,7 +73,7 @@ namespace global
 		return s_carama;
 	}
 
-	collision* GetCollision()
+	collision *GetCollision()
 	{
 		if (s_collision == NULL)
 		{
@@ -81,4 +82,13 @@ namespace global
 
 		return s_collision;
 	}
-}
+	UIObjectManager* GetUIObjectManager()
+	{
+		if (s_ui_object_manager == NULL)
+		{
+			s_ui_object_manager = new UIObjectManager;
+		}
+
+		return s_ui_object_manager;
+	}
+} // namespace global

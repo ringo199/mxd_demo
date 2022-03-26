@@ -3,8 +3,7 @@
 #define __GAME_SCENE_BASE_H__
 
 #include "../scene_base.h"
-#include "../../gameManager.h"
-#include "../../event_manager.h"
+#include "../../objectManager.h"
 
 class game_scene_base : public scene_base
 {
@@ -30,11 +29,12 @@ public:
     virtual void render() override final;
     virtual void afterEvent() override final;
 
+    static void npcEventTest(void*);
+
 private:
     player_info* _player;
 
     IMAGE imgBG;
-    old_enemy* _enemy;
     block* _blockList;
 };
 
@@ -57,7 +57,6 @@ private:
     player_info* _player;
 
     IMAGE imgBG;
-    old_enemy* _enemy;
     block* _blockList;
 };
 

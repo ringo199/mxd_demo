@@ -5,9 +5,10 @@
 
 #include "tools.h"
 #include "inputEvent.h"
+#include "mouseEvent.h"
 #include "global.h"
 #include "collision.h"
-#include "gameManager.h"
+#include "objectManager.h"
 #include "ui_manager.h"
 #include "event_manager.h"
 

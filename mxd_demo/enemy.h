@@ -8,7 +8,7 @@
 #include <math.h>
 #include <graphics.h>
 #include "tools.h"
-#include "carama.h"
+#include "var.h"
 #include "objects.h"
 
 class old_enemy : public enemy
@@ -21,6 +21,7 @@ public:
 	{
 		BIRTH,
 		DIE,
+		DIED,
 
 		IDLE,
 		RUN,
@@ -41,6 +42,8 @@ public:
 	void hit();
 	void hitting();
 
+	static void CreateEnemy(int x, int y);
+
 private:
 	int imgIndex;
 	IMAGE* imgEnemy;
@@ -57,8 +60,14 @@ private:
 	void _move();
 	void _load();
 
-	void _birth();
-	void _die();
 	void _died();
+
+	unsigned long long _change_status_timer_const = 500;
+	unsigned long long _hitting_timer_const = 100;
+
+	unsigned long long _change_status_timer = 0;
+	unsigned long long _hitting_timer = 0;
+	int _hitting_angle = 0;
 };
+
 #endif

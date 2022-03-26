@@ -144,10 +144,11 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="event_manager.h" />
-    <ClInclude Include="gameManager.h" />
+    <ClInclude Include="objectManager.h" />
     <ClInclude Include="game_scene_manager.h" />
     <ClInclude Include="inputEvent.h" />
     <ClInclude Include="initialize.h" />
+    <ClInclude Include="mouseEvent.h" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="scene\game\game_scene_base.h" />
@@ -158,6 +159,8 @@
     <ClInclude Include="tools.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="ui_manager.h" />
+    <ClInclude Include="ui_objectManager.h" />
+    <ClInclude Include="ui_objects.h" />
     <ClInclude Include="var.h" />
   </ItemGroup>
   <ItemGroup>
@@ -165,12 +168,13 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="event_manager.cpp" />
-    <ClCompile Include="gameManager.cpp" />
+    <ClCompile Include="objectManager.cpp" />
     <ClCompile Include="game_scene_manager.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="inputEvent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="initialize.cpp" />
+    <ClCompile Include="mouseEvent.cpp" />
     <ClCompile Include="objects.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="scene\game\game_1.cpp" />
@@ -186,6 +190,8 @@
     <ClCompile Include="scene\ui\ui_scene_base.cpp" />
     <ClCompile Include="tools.cpp" />
     <ClCompile Include="ui_manager.cpp" />
+    <ClCompile Include="ui_objectManager.cpp" />
+    <ClCompile Include="ui_objects.cpp" />
     <ClCompile Include="var.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -16,9 +16,10 @@ enum e_scene_type
 	LOGIN,
 	CHECK_SLAVE_SERVER,
 	CHECK_PLAYER,
+
 	GAME,
 
-	UI_COUNT
+	UI_COUNT,
 };
 
 enum e_game_scene_type
@@ -48,6 +49,14 @@ enum e_event_type
 	GAME_CMD_DOWN,
 	GAME_CMD_JUMP,
 	GAME_CMD_ATTACK,
+	GAME_CMD_STAY,
+};
+
+enum e_atk_or_hit_type
+{
+	ATK_OR_HIT_NULL = -1,
+	PLAYER,
+	ENEMY,
 };
 
 
@@ -147,6 +156,14 @@ protected:
 
 	int _w;
 	int _h;
+};
+
+class world_area : public area
+{
+public:
+	coord* get_coord1();
+	coord* get_coord2();
+	coord* get_coord_center();
 };
 
 #endif

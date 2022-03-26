@@ -17,6 +17,7 @@ void init()
 	GetEventManager()->eventEmit(UI_NEXT);
 
 	keyEvent();
+	mouseEvent();
 }
 
 void loop()

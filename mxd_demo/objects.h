@@ -3,7 +3,7 @@
 #ifndef __OBJECTS_H__
 #define __OBJECTS_H__
 
-#include "carama.h"
+#include "var.h"
 #include "tools.h"
 
 class object
@@ -32,6 +32,8 @@ public:
 	{
 		return this->_base_area.get_height();
 	};
+
+	object* _base_point;
 
 protected:
 	world_area _base_area;
@@ -154,6 +156,7 @@ public:
 		this->hit_time = 1500;
 		this->_hit_cur_tick_count = getTickCount();
 		this->_hit_base_point = NULL;
+		this->_hit_type = ATK_OR_HIT_NULL;
 	}
 	~hit_object()
 	{
@@ -206,6 +209,7 @@ public:
 	int hit_time; // ÎÞµÐÊ±¼ä
 
 	object* _hit_base_point;
+	e_atk_or_hit_type _hit_type;
 
 protected:
 	world_area _hit_area;
@@ -220,6 +224,7 @@ public:
 	{
 		this->_is_attack = false;
 		this->_attack_base_point = NULL;
+		this->_atk_type = ATK_OR_HIT_NULL;
 	}
 	~attack_object()
 	{
@@ -245,6 +250,7 @@ public:
 	void stopAttack() { this->_is_attack = false; }
 
 	object* _attack_base_point;
+	e_atk_or_hit_type _atk_type;
 
 protected:
 	world_area _attack_area;
@@ -316,18 +322,111 @@ protected:
 	world_area _ground_check_area;
 };
 
+class transpoint_object
+{
+public:
+	transpoint_object()
+	{
+		this->_transpoint_base_point = NULL;
+		this->_game_scene = GAME_SCENE_NULL;
+	}
+	~transpoint_object()
+	{
+	}
+
+	world_area* get_transpoint_area() {
+		return &this->_transpoint_area;
+	};
+
+	void setTranspointArea(object* o)
+	{
+		this->_transpoint_area.init(
+			o->get_base_area()->get_coord_base(),
+			coord(0, 0), o->get_base_area()->get_width(), o->get_base_area()->get_height());
+		this->_transpoint_base_point = o;
+	}
+
+	void setTranspoint(e_game_scene_type type)
+	{
+		this->_game_scene = type;
+	}
+
+	void trans();
+
+	object* _transpoint_base_point;
+
+	e_game_scene_type _game_scene;
+
+protected:
+	world_area _transpoint_area;
+};
+
+class click_event_object
+{
+public:
+	click_event_object()
+	{
+		this->_click_event_base_point = NULL;
+		this->_eventListener = 0;
+	}
+	~click_event_object()
+	{
+	}
+	world_area* get_click_event_area() { return &this->_click_event_area; };
+
+	void setClickEventArea(object* o)
+	{
+		this->_click_event_area.init(
+			o->get_base_area()->get_coord_base(),
+			coord(0, 0), o->get_base_area()->get_width(), o->get_base_area()->get_height());
+		this->_click_event_base_point = o;
+	}
+
+	void addEventListener(long func)
+	{
+		this->_eventListener = func;
+	}
+
+	void callEventListener()
+	{
+		typedef void* (*FUNC)(void*);
+		((FUNC)this->_eventListener)(NULL);
+	}
+
+	object* _click_event_base_point;
+
+protected:
+	world_area _click_event_area;
+
+	long _eventListener;
+};
+
 // ----------------------------------------
 
 class animator_
 {
 public:
 	virtual void animator() {};
+
+	void setAnimator(object* o)
+	{
+		this->_animator_base_point = o;
+	}
+
+	object* _animator_base_point;
 };
 
 class other_event_
 {
 public:
 	virtual void other_event() {};
+
+	void setOtherEvent(object* o)
+	{
+		this->_other_event_base_point = o;
+	}
+
+	object* _other_event_base_point;
 };
 
 // ----------------------------------------
@@ -381,6 +480,35 @@ public:
 	virtual void render() override;
 };
 
+class transpoint : public static_object,
+					public render_object,
+					public transpoint_object
+{
+public:
+	transpoint() :
+		static_object(),
+		render_object(),
+		transpoint_object()
+	{
+	}
+
+	void init(int x, int y, int w, int h)
+	{
+		this->initObject(x, y, w, h);
+		this->setRenderArea(this);
+		this->setTranspointArea(this);
+	}
+
+	void init(coord coo, int w, int h)
+	{
+		this->initObject(coo, w, h);
+		this->setRenderArea(this);
+		this->setTranspointArea(this);
+	}
+
+	virtual void render() override;
+};
+
 class sprite_object : public dynamic_collsion_object,
 	public render_object,
 	public hit_object,
@@ -402,7 +530,10 @@ public:
 	player() :
 		sprite_object(),
 		attack_object()
-	{}
+	{
+		this->_atk_type = PLAYER;
+		this->_hit_type = PLAYER;
+	}
 };
 
 class enemy : public sprite_object,
@@ -414,7 +545,35 @@ public:
 		sprite_object(),
 		attack_object(),
 		health_object()
+	{
+		this->_atk_type = ENEMY;
+		this->_hit_type = ENEMY;
+	}
+};
+
+class NPC : public render_object,
+	public dynamic_object,
+	public click_event_object
+{
+public:
+	NPC() : render_object(), dynamic_object(), click_event_object()
 	{}
+
+	void init(coord coo, int w, int h)
+	{
+		this->initObject(coo, w, h);
+		this->setRenderArea(this);
+		this->setClickEventArea(this);
+	}
+
+	void init(int x, int y, int w, int h)
+	{
+		this->initObject(x, y, w, h);
+		this->setRenderArea(this);
+		this->setClickEventArea(this);
+	}
+
+	virtual void render() override;
 };
 
 

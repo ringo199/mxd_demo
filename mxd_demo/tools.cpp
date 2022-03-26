@@ -308,6 +308,12 @@ bool rectIntersect(world_area* a1, world_area* a2)
     );
 }
 
+bool isCoordInRect(coord* coo, area* a)
+{
+    return (a->get_coord1()->x <= coo->x && a->get_coord2()->x >= coo->x &&
+        a->get_coord1()->y <= coo->y && a->get_coord2()->y >= coo->y);
+}
+
 
 void  preLoadSound(const char* name) {
     char cmd[512];

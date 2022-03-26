@@ -2,11 +2,6 @@
 #ifndef __INPUT_EVENT_H__
 #define __INPUT_EVENT_H__
 
-#include <stdio.h>
-#include "tools.h"
-#include "global.h"
-#include "event_manager.h"
-
 #define	CMD_UP			0x1
 #define	CMD_DOWN		0x2
 #define	CMD_LEFT		0x4
@@ -18,11 +13,6 @@
 #define	CMD_SPACE		0x100
 #define	CMD_BACK		0x200
 
-using namespace global;
-
 void keyEvent();
-DWORD WINAPI create_th(LPVOID);
-int  GetCommand();
-void DispatchCommand(int _cmd);
 
 #endif

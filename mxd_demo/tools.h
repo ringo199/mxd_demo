@@ -27,6 +27,8 @@ bool rectIntersect(int a1X, int a1Y, int a2X, int a2Y,
 bool rectIntersect(area* a1, area* a2);
 bool rectIntersect(world_area* a1, world_area* a2);
 
+bool isCoordInRect(coord* coo, area* a);
+
 void  preLoadSound(const char* name);
 void  playSound(const char* name);
 

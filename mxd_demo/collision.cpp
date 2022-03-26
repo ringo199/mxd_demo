@@ -76,36 +76,6 @@ void collision::graviry_check()
 			this->_dynamic_collsion_objects[i]->is_on_ground = false;
 		}
 	}
-	/*vector<static_collsion_object*>::iterator s_it;
-	vector<dynamic_collsion_object*>::iterator d_it;
-	for (d_it = this->_dynamic_collsion_objects.begin(); d_it != this->_dynamic_collsion_objects.end(); ++d_it)
-	{
-		testDrawBar((*d_it)->get_ground_check_area());
-		for (s_it = this->_static_collsion_objects.begin(); s_it != this->_static_collsion_objects.end(); ++s_it)
-		{
-			testDrawBar((*s_it)->get_collsion_area());
-			if (rectIntersect((*s_it)->get_collsion_area(),
-				(*d_it)->get_ground_check_area()))
-			{
-				printf("s: x: %d, y: %d, w, %d, h: %d\nd: x: %d, y: %d, w, %d, h: %d\n",
-					(*s_it)->get_collsion_area()->get_coord1_in_world()->x,
-					(*s_it)->get_collsion_area()->get_coord1_in_world()->y,
-					(*s_it)->get_collsion_area()->get_width(),
-					(*s_it)->get_collsion_area()->get_height(),
-					(*d_it)->get_ground_check_area()->get_coord1_in_world()->x,
-					(*d_it)->get_ground_check_area()->get_coord1_in_world()->y,
-					(*d_it)->get_ground_check_area()->get_width(),
-					(*d_it)->get_ground_check_area()->get_height()
-				);
-				(*d_it)->is_on_ground = true;
-				break;
-			}
-			if (s_it >= this->_static_collsion_objects.end())
-			{
-				(*d_it)->is_on_ground = false;
-			}
-		}
-	}*/
 }
 
 void collision::graviry_force()

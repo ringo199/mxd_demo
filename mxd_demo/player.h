@@ -55,6 +55,7 @@ public:
 	static void cmdRightRun(void*);
 	static void cmdJump(void*);
 	static void cmdAttack(void*);
+	static void cmdStay(void*);
 
 private:
 	player_status status;

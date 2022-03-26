@@ -8,7 +8,6 @@ using namespace global;
 game_1::game_1()
 {
 	this->_player = NULL;
-	this->_enemy = NULL;
 	this->_blockList = NULL;
 }
 
@@ -20,15 +19,11 @@ game_1::~game_1()
 void game_1::init()
 {
 	area map(0, 0, 2000, 1000);
-	GetCarama()->init(map.get_width(), map.get_height(), getwidth(), getheight());
 
 	this->_player = new player_info;
-	this->_enemy = new old_enemy;
 	this->_blockList = new block[5];
 
 	_player->init(300, 600);
-
-	_enemy->init(500, 600);
 
 	_blockList[0].init(0, 0, 200, 1000);
 	_blockList[1].init(1800, 0, 200, 1000);
@@ -41,6 +36,8 @@ void game_1::init()
 
 void game_1::show()
 {
+	area map(0, 0, 2000, 1000);
+	GetCarama()->init(map.get_width(), map.get_height(), getwidth(), getheight());
 	//mciSendString("play res/bg.mp3 repeat", 0, 0, 0);
 	//preLoadSound("res/atk.mp3");
 	//preLoadSound("res/jump.mp3");
@@ -49,18 +46,31 @@ void game_1::show()
 
 	_player->eventRegister();
 
-	GetGameManager()->push_object(_player);
-	GetGameManager()->push_object(_enemy);
+	GetObjectManager()->push_object(_player);
+
+	old_enemy::CreateEnemy(550, 600);
+	old_enemy::CreateEnemy(550, 400);
+	old_enemy::CreateEnemy(800, 600);
+
+	transpoint *transp = new transpoint();
+	transp->init(1600, 700, 100, 100);
+	transp->setTranspoint(GAME_2);
+	GetObjectManager()->push_object(transp);
+
+	NPC *npc = new NPC();
+	npc->init(1000, 700, 100, 100);
+	npc->addEventListener((long)&this->npcEventTest);
+	GetObjectManager()->push_object(npc);
 
 	for (int i = 0; i < 5; i++)
 	{
-		GetGameManager()->push_object(&this->_blockList[i]);
+		GetObjectManager()->push_object(&this->_blockList[i]);
 	}
 }
 
 void game_1::hide()
 {
-	GetGameManager()->clear_objects();
+	GetObjectManager()->clear_objects();
 
 	_player->clearEventRegister();
 }
@@ -71,15 +81,13 @@ void game_1::clear()
 
 	delete this->_player;
 	this->_player = NULL;
-	delete this->_enemy;
-	this->_enemy = NULL;
 	delete[] this->_blockList;
 	this->_blockList = NULL;
 }
 
 void game_1::beforeEvent()
 {
-	GetGameManager()->beforeEvent();
+	GetObjectManager()->beforeEvent();
 	GetCarama()->changeCenterPoint();
 }
 
@@ -88,10 +96,15 @@ void game_1::render()
 	int ox, oy;
 	GetCarama()->mapCoord2CaramaCoora(0, 0, &ox, &oy);
 	putimage(ox, oy, &this->imgBG);
-	GetGameManager()->render();
+	GetObjectManager()->render();
 }
 
 void game_1::afterEvent()
 {
-	GetGameManager()->afterEvent();
+	GetObjectManager()->afterEvent();
+}
+
+void game_1::npcEventTest(void* ctx)
+{
+	printf("isclicked\n");
 }
