@@ -8,7 +8,6 @@ using namespace global;
 player_info::player_info() : player()
 {
 	this->status = player_status::IDLE;
-	this->imgIndex = 0;
 	this->speed = 2;
 	this->is_reverse = false;
 	this->is_runing = false;
@@ -28,10 +27,9 @@ player_info::~player_info()
 
 void player_info::init(int x, int y)
 {
-	this->_load();
-
 	this->initObject(coord(x, y),
-					 this->imgPlayer[0].getwidth(), this->imgPlayer[0].getheight());
+		GetLoadManager()->LoadAsset(RES_HERO)->img->getwidth(),
+		GetLoadManager()->LoadAsset(RES_HERO)->img->getheight());
 
 	this->setRenderArea(this);
 
@@ -55,17 +53,6 @@ void player_info::init(int x, int y)
 	this->setOtherEvent(this);
 }
 
-void player_info::_load()
-{
-	for (int i = 0; i < 12; i++)
-	{
-		sprintf_s(this->path, "res/hero%d.png", i + 1);
-		loadimage(&this->imgPlayer[i], this->path);
-		sprintf_s(this->path, "res/bark/g%02d.png", i + 1);
-		loadimage(&this->imgAtkPlayer[i], this->path);
-	}
-}
-
 void player_info::_move(coord coo)
 {
 	this->changeOffCoord(coo);
@@ -86,7 +73,7 @@ void player_info::run(int is_right)
 {
 	static int count = 0;
 	++count;
-	if (count < 100)
+	if (count < 150)
 	{
 		return;
 	}
@@ -132,7 +119,7 @@ void player_info::jump()
 		this->v_y = -20;
 		this->is_runing = false;
 		ChangeUpdate(true);
-		playSound("res/jump.mp3");
+		//playSound("res/jump.mp3");
 		if (this->status != player_status::JUMP)
 		{
 			this->status = player_status::JUMP;
@@ -145,7 +132,7 @@ void player_info::attack()
 	if (!this->getIsAttack())
 	{
 		this->startAttack();
-		this->imgIndex = 0;
+		this->ChangeImageIndex(RES_HERO_ATTACK, 0);
 		this->is_runing = false;
 		ChangeUpdate(true);
 	}
@@ -203,9 +190,9 @@ void player_info::attacking()
 	}
 	count = 0;
 
-	this->imgIndex = (this->imgIndex + 1) % 12;
+	this->AddStepImageIndex(RES_HERO_ATTACK);
 
-	if (this->imgIndex == 0)
+	if (this->GetImageIndex(RES_HERO_ATTACK) == 0)
 	{
 		this->stopAttack();
 		this->status = player_status::IDLE;
@@ -217,10 +204,10 @@ void player_info::animator()
 	switch (this->status)
 	{
 	case player_status::IDLE:
-		this->imgIndex = 9;
+		this->ChangeImageIndex(RES_HERO, 9);
 		break;
 	case player_status::RUN:
-		this->imgIndex = (this->imgIndex + 1) % 12;
+		this->AddStepImageIndex(RES_HERO);
 		break;
 	case player_status::JUMP:
 		if (this->is_on_ground)
@@ -244,20 +231,22 @@ void player_info::render()
 	case player_status::IDLE:
 	case player_status::RUN:
 	case player_status::JUMP:
-		putimagePNG2(this->get_render_area()->get_coord1(), &this->imgPlayer[this->imgIndex], this->is_reverse, this->sa_percent);
+		putimagePNG2(this->get_render_area()->get_coord1(),
+			this->GetImage(RES_HERO), this->is_reverse, this->sa_percent);
 		break;
 	case player_status::ATTACK:
-		putimagePNG2(this->get_render_area()->get_coord1(), &this->imgAtkPlayer[this->imgIndex], this->is_reverse, this->sa_percent);
+		putimagePNG2(this->get_render_area()->get_coord1(),
+			this->GetImage(RES_HERO_ATTACK), this->is_reverse, this->sa_percent);
 		break;
 	default:
 		break;
 	}
-	this->renderHP();
 }
 
 void player_info::other_event()
 {
 	this->checkIsRuning();
+	GetSessionManager()->SetSession(SESSION_HP, this->health);
 }
 
 void player_info::checkIsRuning()
@@ -340,10 +329,4 @@ void player_info::cmdStay(void *ctx)
 	{
 		context->status = player_status::IDLE;
 	}
-}
-
-void player_info::renderHP()
-{
-	double percent = (double)(this->health * 100 / this->healthMax) / 100;
-	drawBloodBar(10, 10, 300, 20, 3, BLACK, LIGHTGRAY, RED, percent);
 }

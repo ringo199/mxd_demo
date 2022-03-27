@@ -34,6 +34,8 @@ public:
 		{
 			this->_ui_click_event_objects.push_back(ui_click_event_obj);
 		}
+
+		this->_ui_objects.push_back(obj);
 	}
 
 	template <typename T>
@@ -64,6 +66,16 @@ public:
 				}
 			}
 		}
+
+		for (int i = 0; i < this->_ui_objects.size(); ++i)
+		{
+			if (obj->_base_point == this->_ui_objects[i]->_base_point)
+			{
+				delete obj;
+				this->_ui_objects.erase(this->_ui_objects.begin() + i);
+				break;
+			}
+		}
 	}
 
 	void clear_objects();
@@ -73,6 +85,7 @@ public:
 private:
 	vector<ui_render_object*> _ui_render_objects;
 	vector<ui_click_event_object*> _ui_click_event_objects;
+	vector<ui_object*> _ui_objects;
 
 	//vector<ui_animator_*> _ui_animators;
 	//void _animator();

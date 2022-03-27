@@ -7,7 +7,6 @@ using namespace global;
 
 old_enemy::old_enemy() : enemy()
 {
-	this->imgIndex = 4;
 	this->status = enemy_status::BIRTH;
 	this->sa_percent = 0.0f;
 	this->is_reverse = false;
@@ -17,7 +16,6 @@ old_enemy::old_enemy() : enemy()
 	this->health = 30;
 	this->healthMax = 30;
 
-	this->imgEnemy = NULL;
 	this->is_hit = false;
 
 	this->startAttack();
@@ -25,18 +23,13 @@ old_enemy::old_enemy() : enemy()
 
 old_enemy::~old_enemy()
 {
-	delete[] this->imgEnemy;
-	this->imgEnemy = NULL;
 }
 
 void old_enemy::init(int x, int y)
 {
-	this->imgEnemy = new IMAGE[6];
-
-	this->_load();
-
 	this->initObject(coord(x, y),
-					 this->imgEnemy[0].getwidth(), this->imgEnemy[0].getheight());
+		GetLoadManager()->LoadAsset(RES_ENEMY)->img->getwidth(),
+		GetLoadManager()->LoadAsset(RES_ENEMY)->img->getheight());
 	this->setRenderArea(this);
 	this->setCollsionArea(this);
 	this->setAttackArea(this, coord(this->area_pad, this->area_pad),
@@ -54,7 +47,8 @@ void old_enemy::init(int x, int y)
 
 void old_enemy::render()
 {
-	putimagePNG2(this->get_render_area()->get_coord1(), getwidth(), &this->imgEnemy[this->imgIndex], this->is_reverse, this->sa_percent);
+	putimagePNG2(this->get_render_area()->get_coord1(), getwidth(),
+		this->GetImage(RES_ENEMY), this->is_reverse, this->sa_percent);
 
 	this->renderHP();
 }
@@ -76,12 +70,11 @@ void old_enemy::animator()
 			this->sa_percent = 1.0f;
 			this->status = enemy_status::IDLE;
 		}
-		break;
 	case enemy_status::IDLE:
-		this->imgIndex = 4;
+		this->ChangeImageIndex(RES_ENEMY, 4);
 		break;
 	case enemy_status::RUN:
-		this->imgIndex = (this->imgIndex + 1) % 6;
+		this->AddStepImageIndex(RES_ENEMY);
 		break;
 	case enemy_status::DIE:
 		this->sa_percent -= 0.05f;
@@ -198,21 +191,11 @@ void old_enemy::CreateEnemy(int x, int y)
 	GetObjectManager()->push_object(ep);
 }
 
-void old_enemy::_load()
-{
-	char path[64];
-	for (int i = 0; i < 6; i++)
-	{
-		sprintf_s(path, "res/p%d.png", i + 1);
-		loadimage(&this->imgEnemy[i], path);
-	}
-}
 
 void old_enemy::_died()
 {
 	this->status = enemy_status::DIED;
 	GetObjectManager()->delete_object(this);
-	delete this;
 }
 
 void old_enemy::_move()

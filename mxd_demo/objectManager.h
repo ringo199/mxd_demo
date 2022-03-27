@@ -78,6 +78,8 @@ public:
 		{
 			this->_click_event_objects.push_back(click_event_obj);
 		}
+
+		this->_objects.push_back(obj);
 	}
 
 	template <typename T>
@@ -182,11 +184,23 @@ public:
 				}
 			}
 		}
+
+		for (int i = 0; i < this->_objects.size(); ++i)
+		{
+			if (obj->_base_point == this->_objects[i]->_base_point)
+			{
+				delete obj;
+				this->_objects.erase(this->_objects.begin() + i);
+				break;
+			}
+		}
 	}
 
 	void clear_objects();
 
 	void checkClickEvent(coord* coo);
+
+	player_info* GetPlayer();
 
 private:
 	vector<render_object *> _render_objects;
@@ -198,12 +212,15 @@ private:
 	vector<transpoint_object *> _transpoints;
 	vector<click_event_object*> _click_event_objects;
 
+	vector<object*> _objects;
+
 	void _hit();
 	void _collision_event();
 	void _animator();
 	void _other_event();
 
 	collision *_col;
+	player_info* _player;
 };
 
 #endif

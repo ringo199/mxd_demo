@@ -49,13 +49,19 @@ public:
 	ui_render_object()
 	{
 		this->_render_base_point = NULL;
+		this->_res_type = RES_NULL;
 	}
 	~ui_render_object()
 	{
 	}
 	area* get_render_area() { return &this->_render_area; };
 
-	virtual void render() {};
+	virtual void render()
+	{
+		this->renderImage();
+		this->renderChild();
+	};
+	virtual void renderChild() {}
 
 	void setRenderArea(ui_object* o)
 	{
@@ -71,10 +77,16 @@ public:
 		this->_render_base_point = o;
 	}
 
+	void loadRenderImage();
+	void renderImage();
+
+	void setResType(e_res_type res_type) { this->_res_type = res_type; }
+
 	ui_object* _render_base_point;
 
 protected:
 	area _render_area;
+	e_res_type _res_type;
 };
 
 class ui_click_event_object
@@ -122,6 +134,7 @@ protected:
 	bool _is_event_mgr = false; // 是否为eventManager绑定的事件
 };
 
+
 // ---------------------------
 
 class button : public ui_object, public ui_render_object, public ui_click_event_object
@@ -129,7 +142,7 @@ class button : public ui_object, public ui_render_object, public ui_click_event_
 public:
 	button() : ui_object(), ui_render_object(), ui_click_event_object()
 	{
-
+		this->btntxt = "";
 	}
 	~button() {}
 
@@ -147,7 +160,93 @@ public:
 		this->setClickEventArea(this);
 	}
 
+	virtual void renderChild() override;
+
+	const char* btntxt;
+};
+
+class board : public ui_object, public ui_render_object
+{
+public:
+	board() : ui_object(), ui_render_object()
+	{
+	}
+	~board() {}
+
+	void init(coord coo, int w, int h)
+	{
+		this->initObject(coo, w, h);
+		this->setRenderArea(this);
+	}
+
+	void init(int x, int y, int w, int h)
+	{
+		this->initObject(x, y, w, h);
+		this->setRenderArea(this);
+	}
+};
+
+class label : public ui_object, public ui_render_object
+{
+public:
+	label() : ui_object(), ui_render_object()
+	{
+		this->txt = "";
+		this->fontSize = 25;
+		this->color = 0;
+	}
+	~label() {}
+
+	void init(coord coo, int w, int h)
+	{
+		this->initObject(coo, w, h);
+		this->setRenderArea(this);
+	}
+
+	void init(int x, int y, int w, int h)
+	{
+		this->initObject(x, y, w, h);
+		this->setRenderArea(this);
+	}
+
 	virtual void render() override;
+	const char* txt;
+	int fontSize;
+	int color;
+};
+
+class progress : public ui_object, public ui_render_object
+{
+public:
+	progress() : ui_object(), ui_render_object()
+	{
+		this->lineWidth = 3;
+		this->boardColor = 0;
+		this->emptyColor = 0xAAAAAA;
+		this->fillColor = 0;
+		this->percent = 0.0;
+	}
+	~progress() {}
+
+	void init(coord coo, int w, int h)
+	{
+		this->initObject(coo, w, h);
+		this->setRenderArea(this);
+	}
+
+	void init(int x, int y, int w, int h)
+	{
+		this->initObject(x, y, w, h);
+		this->setRenderArea(this);
+	}
+
+	virtual void render() override;
+
+	int lineWidth;
+	int boardColor;
+	int emptyColor;
+	int fillColor;
+	float percent;
 };
 
 #endif // !__UI_OBJECTS_H__

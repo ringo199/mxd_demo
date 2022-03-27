@@ -81,6 +81,12 @@
     <ClInclude Include="ui_objectManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="session_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="load_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tools.cpp">
@@ -168,6 +174,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ui_objectManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="session_manager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="load_manager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -33,6 +33,8 @@ void  preLoadSound(const char* name);
 void  playSound(const char* name);
 
 void testDrawBar(area* a);
+int getStringLen(const char* text); // 获取字符串长度，区分中英文
+void drawText(area* a, const char* text, int fontSize, int color);
 void drawBloodBar(area* a, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent);
 void drawBloodBar(int x, int y, int width, int height, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent);
 

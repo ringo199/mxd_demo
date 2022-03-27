@@ -7,8 +7,6 @@ using namespace global;
 
 game_1::game_1()
 {
-	this->_player = NULL;
-	this->_blockList = NULL;
 }
 
 game_1::~game_1()
@@ -18,20 +16,6 @@ game_1::~game_1()
 
 void game_1::init()
 {
-	area map(0, 0, 2000, 1000);
-
-	this->_player = new player_info;
-	this->_blockList = new block[5];
-
-	_player->init(300, 600);
-
-	_blockList[0].init(0, 0, 200, 1000);
-	_blockList[1].init(1800, 0, 200, 1000);
-	_blockList[2].init(0, 800, 2000, 200);
-	_blockList[3].init(200, 300, 300, 20);
-	_blockList[4].init(500, 700, 20, 100);
-
-	loadimage(&this->imgBG, "res/bark/bg.png", map.get_width(), map.get_height(), true);
 }
 
 void game_1::show()
@@ -42,47 +26,78 @@ void game_1::show()
 	//preLoadSound("res/atk.mp3");
 	//preLoadSound("res/jump.mp3");
 
-	GetCarama()->setCenterPoint(_player->get_base_area()->get_coord_base());
+	background* _bg = new background;
+	_bg->init(0, 0, 2000, 1000);
+	_bg->setResType(RES_BG);
+	_bg->loadRenderImage();
+	GetObjectManager()->push_object(_bg);
 
-	_player->eventRegister();
+	block* _blockList = new block[6];
 
-	GetObjectManager()->push_object(_player);
+	NPC* npc = new NPC();
+	npc->init(1000, 700, 100, 100);
+	npc->setResType(RES_NPC_ACAO);
+	npc->loadRenderImage();
+	npc->addEventListener((long)&this->npcEventTest);
+	GetObjectManager()->push_object(npc);
+
+	_blockList[0].init(0, 0, 200, 1000);
+	_blockList[0].setResType(RES_BLOCK_WALL);
+	_blockList[1].init(1800, 0, 200, 1000);
+	_blockList[1].setResType(RES_BLOCK_WALL);
+	_blockList[2].init(0, 800, 2000, 200);
+	_blockList[2].setResType(RES_BLOCK_GROUND);
+	_blockList[3].init(250, 500, 100, 50);
+	_blockList[3].setResType(RES_BLOCK_PLATFORM1);
+	_blockList[4].init(500, 700, 100, 50);
+	_blockList[4].setResType(RES_BLOCK_PLATFORM2);
+	_blockList[5].init(800, 600, 200, 50);
+	_blockList[5].setResType(RES_BLOCK_PLATFORM3);
 
 	old_enemy::CreateEnemy(550, 600);
 	old_enemy::CreateEnemy(550, 400);
 	old_enemy::CreateEnemy(800, 600);
 
 	transpoint *transp = new transpoint();
-	transp->init(1600, 700, 100, 100);
+	transp->init(1550, 650, 150, 150);
 	transp->setTranspoint(GAME_2);
+	transp->setResType(RES_DOOR);
+	transp->loadRenderImage();
 	GetObjectManager()->push_object(transp);
 
-	NPC *npc = new NPC();
-	npc->init(1000, 700, 100, 100);
-	npc->addEventListener((long)&this->npcEventTest);
-	GetObjectManager()->push_object(npc);
-
-	for (int i = 0; i < 5; i++)
+	if (GetSessionManager()->GetSession(SESSION_TRANS_FROM) == GAME_1)
 	{
-		GetObjectManager()->push_object(&this->_blockList[i]);
+		GetObjectManager()->GetPlayer()->init(1550, 650);
 	}
+	else
+	{
+		GetObjectManager()->GetPlayer()->init(300, 600);
+	}
+
+	GetCarama()->setCenterPoint(GetObjectManager()->GetPlayer()->get_base_area()->get_coord_base());
+
+	GetObjectManager()->GetPlayer()->eventRegister();
+
+	GetObjectManager()->push_object(GetObjectManager()->GetPlayer());
+
+	for (int i = 0; i < 6; i++)
+	{
+		_blockList[i].loadRenderImage();
+		GetObjectManager()->push_object(&_blockList[i]);
+	}
+	GetSessionManager()->DeleteSession(SESSION_TRANS_FROM);
 }
 
 void game_1::hide()
 {
 	GetObjectManager()->clear_objects();
 
-	_player->clearEventRegister();
+	GetObjectManager()->GetPlayer()->clearEventRegister();
 }
 
 void game_1::clear()
 {
 	this->hide();
-
-	delete this->_player;
-	this->_player = NULL;
-	delete[] this->_blockList;
-	this->_blockList = NULL;
 }
 
 void game_1::beforeEvent()
@@ -93,9 +108,6 @@ void game_1::beforeEvent()
 
 void game_1::render()
 {
-	int ox, oy;
-	GetCarama()->mapCoord2CaramaCoora(0, 0, &ox, &oy);
-	putimage(ox, oy, &this->imgBG);
 	GetObjectManager()->render();
 }
 

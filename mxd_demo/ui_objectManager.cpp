@@ -30,6 +30,12 @@ void UIObjectManager::clear_objects()
 {
 	vector<ui_render_object*>().swap(this->_ui_render_objects);
 	vector<ui_click_event_object*>().swap(this->_ui_click_event_objects);
+
+	for (int i = 0; i < this->_ui_objects.size(); ++i)
+	{
+		this->_ui_objects.clear();
+	}
+	vector<ui_object*>().swap(this->_ui_objects);
 }
 
 void UIObjectManager::checkClickEvent(coord* coo)

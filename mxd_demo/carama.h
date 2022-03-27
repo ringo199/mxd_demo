@@ -25,6 +25,7 @@ public:
 	void setCenterPoint(coord* coo);
 	void changeCenterPoint();
 
+	bool isVisible(area* a);
 	//void mapCoord2CaramaCoora(int x, int y, int* ox, int* oy, bool* isVisible);
 	void mapCoord2CaramaCoora(int x, int y, int* ox, int* oy);
 	void mapCoord2CaramaCoora(coord incoo, coord* outcoo);

@@ -1,5 +1,6 @@
 
 #include "carama.h"
+#include "tools.h"
 
 
 carama_info::carama_info()
@@ -91,6 +92,11 @@ void carama_info::changeCenterPoint()
 			}
 		}
 	}
+}
+
+bool carama_info::isVisible(area* a)
+{
+	return rectIntersect(a, &this->_carama_area);
 }
 
 //void carama_info::mapCoord2CaramaCoora(int x, int y, int* ox, int* oy, bool* isVisible)

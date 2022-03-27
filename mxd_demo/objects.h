@@ -5,6 +5,7 @@
 
 #include "var.h"
 #include "tools.h"
+#include <map>
 
 class object
 {
@@ -93,7 +94,12 @@ public:
 	~render_object();
 	world_area* get_render_area();
 
-	virtual void render() {};
+	virtual void render()
+	{
+		this->renderImage();
+		this->renderChild();
+	};
+	virtual void renderChild() {}
 
 	void setRenderArea(object* o)
 	{
@@ -109,10 +115,16 @@ public:
 		this->_render_base_point = o;
 	}
 
+	void loadRenderImage();
+	void renderImage();
+
+	void setResType(e_res_type res_type) { this->_res_type = res_type; }
+
 	object* _render_base_point;
 
 protected:
 	world_area _render_area;
+	e_res_type _res_type;
 };
 
 class collsion_object
@@ -429,6 +441,18 @@ public:
 	object* _other_event_base_point;
 };
 
+class image_indexs_
+{
+public:
+	int GetImageIndex(e_res_type);
+	int ChangeImageIndex(e_res_type, int);
+	int AddStepImageIndex(e_res_type);
+	IMAGE* GetImage(e_res_type);
+
+protected:
+	std::map<e_res_type, int> _img_indexs;
+};
+
 // ----------------------------------------
 
 class static_collsion_object : public static_object,
@@ -455,6 +479,27 @@ public:
 
 // ----------------------------------------
 
+class background : public static_object, public render_object
+{
+public:
+	background():
+		static_object(),
+		render_object()
+	{}
+
+	void init(int x, int y, int w, int h)
+	{
+		this->initObject(x, y, w, h);
+		this->setRenderArea(this);
+	}
+
+	void init(coord coo, int w, int h)
+	{
+		this->initObject(coo, w, h);
+		this->setRenderArea(this);
+	}
+};
+
 class block : public static_collsion_object, public render_object
 {
 public:
@@ -476,8 +521,6 @@ public:
 		this->setRenderArea(this);
 		this->setCollsionArea(this);
 	}
-
-	virtual void render() override;
 };
 
 class transpoint : public static_object,
@@ -505,15 +548,14 @@ public:
 		this->setRenderArea(this);
 		this->setTranspointArea(this);
 	}
-
-	virtual void render() override;
 };
 
 class sprite_object : public dynamic_collsion_object,
 	public render_object,
 	public hit_object,
 	public animator_,
-	public other_event_
+	public other_event_,
+	public image_indexs_
 {
 public:
 	sprite_object() :
@@ -572,8 +614,6 @@ public:
 		this->setRenderArea(this);
 		this->setClickEventArea(this);
 	}
-
-	virtual void render() override;
 };
 
 

@@ -12,6 +12,8 @@ namespace global
 	static carama_info *s_carama = NULL;
 	static collision *s_collision = NULL;
 	static UIObjectManager* s_ui_object_manager = NULL;
+	static SessionManager* s_session_manager = NULL;
+	static LoadManager* s_load_manager = NULL;
 
 	bool GetUpdate()
 	{
@@ -91,4 +93,24 @@ namespace global
 
 		return s_ui_object_manager;
 	}
+	SessionManager* GetSessionManager()
+	{
+		if (s_session_manager == NULL)
+		{
+			s_session_manager = new SessionManager;
+		}
+
+		return s_session_manager;
+	}
+
+	LoadManager* GetLoadManager()
+	{
+		if (s_load_manager == NULL)
+		{
+			s_load_manager = new LoadManager;
+		}
+
+		return s_load_manager;
+	}
+
 } // namespace global

@@ -9,6 +9,8 @@
 #include "carama.h"
 #include "collision.h"
 #include "ui_objectManager.h"
+#include "session_manager.h"
+#include "load_manager.h"
 
 namespace global
 {
@@ -21,6 +23,8 @@ namespace global
 	carama_info *GetCarama();
 	collision *GetCollision();
 	UIObjectManager* GetUIObjectManager();
+	SessionManager* GetSessionManager();
+	LoadManager* GetLoadManager();
 } // namespace global
 
 #endif

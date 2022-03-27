@@ -16,10 +16,10 @@ enum e_scene_type
 	LOGIN,
 	CHECK_SLAVE_SERVER,
 	CHECK_PLAYER,
-
 	GAME,
 
 	UI_COUNT,
+
 };
 
 enum e_game_scene_type
@@ -59,6 +59,42 @@ enum e_atk_or_hit_type
 	ENEMY,
 };
 
+enum e_session_key_type
+{
+	SESSION_KEY_NULL = -1,
+
+	SESSION_LEVEL,
+	SESSION_HP,
+	SESSION_MP,
+	SESSION_EXP,
+
+	SESSION_TRANS_FROM
+};
+
+enum e_res_type
+{
+	RES_NULL,
+	RES_BG,
+	RES_HERO,
+	RES_HERO_ATTACK,
+
+	RES_ENEMY,
+	RES_UI_PLAYER_INFO,
+	RES_UI_BTN_,
+	RES_UI_BTN,
+	RES_BLOCK_GROUND,
+	RES_BLOCK_WALL,
+	RES_BLOCK_PLATFORM1,
+	RES_BLOCK_PLATFORM2,
+	RES_BLOCK_PLATFORM3,
+	RES_DOOR,
+	RES_NPC_ACAO,
+	RES_UI_BG1,
+	RES_UI_BG2,
+	RES_UI_BG3,
+	RES_UI_BG4,
+	RES_UI_BG_LOADING
+};
 
 class coord
 {

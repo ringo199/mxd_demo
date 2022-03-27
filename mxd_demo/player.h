@@ -32,8 +32,6 @@ public:
 	virtual void animator() override;
 	virtual void other_event() override;
 
-	void renderHP();
-
 	void run(int is_right);
 	void updown(int is_daown);
 	void jump();
@@ -59,10 +57,6 @@ public:
 
 private:
 	player_status status;
-	IMAGE imgPlayer[12];
-	IMAGE imgAtkPlayer[12];
-	char path[64];
-	int imgIndex;
 
 	bool is_reverse;
 	bool is_runing;
@@ -75,7 +69,6 @@ private:
 	int health;
 	int healthMax;
 
-	void _load();
 	void _move(coord coo);
 };
 

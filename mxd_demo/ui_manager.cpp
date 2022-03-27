@@ -31,19 +31,21 @@ void UIManager::nextScene(void* ctx)
         printf("is top!!\n");
         return;
     }
+
+    printf("%d\n", cur_size);
     e_scene_type next_type = (e_scene_type)cur_size;
 
-    context->_loadingScene->show();
-    context->_is_loading = true;
     if (cur_size > 0)
     {
         context->hideScene();
     }
+    context->_loadingScene->show();
+    context->_is_loading = true;
     context->loadScene(next_type);
     context->_scene_types.push(next_type);
-    context->showScene();
-    context->_is_loading = false;
     context->_loadingScene->hide();
+    context->_is_loading = false;
+    context->showScene();
 }
 
 void UIManager::backScene(void* ctx)

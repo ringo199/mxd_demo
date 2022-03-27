@@ -259,11 +259,11 @@ void putimagePNG2(int x, int y, int winWidth, IMAGE* picture, bool is_reverse, d
         SetWorkingImage(picture);
         if (is_reverse)
         {
-            getimage(&imgTmp, picture->getwidth() - (winWidth - x), 0, winWidth - x, picture->getheight());
+        getimage(&imgTmp, picture->getwidth() - (winWidth - x), 0, winWidth - x, picture->getheight());
         }
         else
         {
-            getimage(&imgTmp, 0, 0, winWidth - x, picture->getheight());
+        getimage(&imgTmp, 0, 0, winWidth - x, picture->getheight());
         }
         SetWorkingImage();
         picture = &imgTmp;
@@ -350,6 +350,30 @@ void  playSound(const char* name) {
 void testDrawBar(area* a)
 {
     drawBloodBar(a, BLACK, YELLOW, WHITE, RED, 1.0);
+}
+
+int getStringLen(const char* s)
+{
+    int count = 0;
+    for (int i = 0; i < strlen(s); ++i)
+    {
+        if (i + 1 < strlen(s) && (unsigned char)s[i] >= 0x81 &&
+            (unsigned char)s[i] <= 0xFE && (unsigned char)s[i + 1] >= 0x40 &&
+            (unsigned char)s[i + 1] <= 0xFE)
+        {
+            ++i;
+        }
+        ++count;
+    }
+    return count;
+}
+
+void drawText(area* a, const char* text, int fontSize, int color)
+{
+    setbkmode(TRANSPARENT);
+    settextcolor(color);
+    settextstyle(fontSize, 0, "ºÚÌå");
+    outtextxy(a->get_coord_center()->x - fontSize * getStringLen(text) / 2, a->get_coord_center()->y - fontSize / 2, text);
 }
 
 void drawBloodBar(area* a, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent)

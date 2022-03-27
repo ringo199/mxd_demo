@@ -22,7 +22,6 @@ static coord curMidClickCoord;
 static unsigned long long lastMouseEvent = 0;
 static unsigned long long curMouseEvent = 0;
 
-HWND h = GetForegroundWindow();
 POINT pt;
 
 DWORD WINAPI create_mouse_th(LPVOID);
@@ -48,7 +47,7 @@ void GetMouseCommand()
 	lastMouseEvent = curMouseEvent;
 	curMouseEvent = 0;
 	GetCursorPos(&pt);
-	ScreenToClient(h, &pt);
+	ScreenToClient(GetForegroundWindow(), &pt);
 
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)	curMouseEvent |= MOUSE_LEFT_DOWN;
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)	curMouseEvent |= MOUSE_RIGHT_DOWN;

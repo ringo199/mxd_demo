@@ -20,9 +20,25 @@ void ui_check_master_server::init()
 
 void ui_check_master_server::show()
 {
+    board* b = new board;
+    b->init(0, 0, getwidth(), getheight());
+    b->setResType(RES_UI_BG1);
+    b->loadRenderImage();
+    GetUIObjectManager()->push_object(b);
+
+    label* l = new label;
+    l->color = WHITE;
+    l->fontSize = 50;
+    l->txt = "请选择大区";
+    l->init(getwidth() / 2 - 250, 100, 500, 100);
+
     button* btn = new button;
     btn->init(getwidth() / 2 + 50, getheight() / 2 - 50, 100, 100);
     btn->addEventListener(UI_NEXT);
+    btn->btntxt = "下一步";
+    btn->setResType(RES_UI_BTN_);
+    btn->loadRenderImage();
+    GetUIObjectManager()->push_object(l);
     GetUIObjectManager()->push_object(btn);
 }
 
@@ -41,8 +57,6 @@ void ui_check_master_server::beforeEvent()
 
 void ui_check_master_server::render()
 {
-    static area a(0, 0, getwidth(), getheight());
-    drawBloodBar(&a, 2, RED, BLUE, BLACK, 1.0);
     GetUIObjectManager()->render();
 }
 

@@ -45,8 +45,6 @@ public:
 	static void CreateEnemy(int x, int y);
 
 private:
-	int imgIndex;
-	IMAGE* imgEnemy;
 	enemy_status status;
 	bool is_reverse;
 	int speed;
@@ -58,7 +56,6 @@ private:
 	int healthMax;
 
 	void _move();
-	void _load();
 
 	void _died();
 

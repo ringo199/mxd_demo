@@ -4,6 +4,7 @@
 
 #include "../scene_base.h"
 #include "../../game_scene_manager.h"
+#include "../../ui_objects.h"
 
 class ui_scene_base : public scene_base
 {
@@ -111,8 +112,7 @@ public:
     virtual void afterEvent() override final;
 
 protected:
-
-private:
+    board* _ui_loading_board;
 };
 
 class ui_login : public ui_scene_base

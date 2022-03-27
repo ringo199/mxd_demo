@@ -8,6 +8,7 @@ using namespace global;
 objectManager::objectManager()
 {
 	this->_col = GetCollision();
+	this->_player = nullptr;
 }
 
 objectManager::~objectManager()
@@ -58,6 +59,12 @@ void objectManager::clear_objects()
 	vector<click_event_object*>().swap(this->_click_event_objects);
 
 	GetCollision()->clear_objects();
+
+	for (int i = 0; i < this->_objects.size(); ++i)
+	{
+		this->_objects.clear();
+	}
+	vector<object*>().swap(this->_objects);
 }
 
 void objectManager::checkClickEvent(coord* coo)
@@ -69,6 +76,15 @@ void objectManager::checkClickEvent(coord* coo)
 			this->_click_event_objects[i]->callEventListener();
 		}
 	}
+}
+
+player_info* objectManager::GetPlayer()
+{
+	if (this->_player == nullptr)
+	{
+		this->_player = new player_info;
+	}
+	return this->_player;
 }
 
 void objectManager::_hit()

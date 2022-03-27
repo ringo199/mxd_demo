@@ -30,12 +30,6 @@ public:
     virtual void afterEvent() override final;
 
     static void npcEventTest(void*);
-
-private:
-    player_info* _player;
-
-    IMAGE imgBG;
-    block* _blockList;
 };
 
 class game_2 : public game_scene_base
@@ -54,10 +48,6 @@ public:
     virtual void afterEvent() override final;
 
 private:
-    player_info* _player;
-
-    IMAGE imgBG;
-    block* _blockList;
 };
 
 #endif
