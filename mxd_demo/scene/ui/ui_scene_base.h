@@ -37,6 +37,26 @@ protected:
 private:
 };
 
+class ui_login : public ui_scene_base
+{
+public:
+    ui_login();
+    ~ui_login();
+
+    virtual void init() override final;
+    virtual void show() override final;
+    virtual void hide() override final;
+    virtual void clear() override final;
+
+    virtual void beforeEvent() override final;
+    virtual void render() override final;
+    virtual void afterEvent() override final;
+
+protected:
+
+private:
+};
+
 class ui_check_player : public ui_scene_base
 {
 public:
@@ -113,26 +133,6 @@ public:
 
 protected:
     board* _ui_loading_board;
-};
-
-class ui_login : public ui_scene_base
-{
-public:
-    ui_login();
-    ~ui_login();
-
-    virtual void init() override final;
-    virtual void show() override final;
-    virtual void hide() override final;
-    virtual void clear() override final;
-
-    virtual void beforeEvent() override final;
-    virtual void render() override final;
-    virtual void afterEvent() override final;
-
-protected:
-
-private:
 };
 
 

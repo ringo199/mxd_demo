@@ -57,13 +57,13 @@ void UIManager::backScene(void* ctx)
         return;
     }
 
-    context->_loadingScene->show();
-    context->_is_loading = true;
     context->hideScene();
+    context->_is_loading = true;
+    context->_loadingScene->show();
     context->clearScene();
-    context->showScene();
-    context->_is_loading = false;
     context->_loadingScene->hide();
+    context->_is_loading = false;
+    context->showScene();
 }
 
 void UIManager::backHomeScene(void* ctx)

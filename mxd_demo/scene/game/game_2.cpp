@@ -47,9 +47,11 @@ void game_2::show()
 	_blockList[5].init(800, 600, 200, 50);
 	_blockList[5].setResType(RES_BLOCK_PLATFORM3);
 
-	old_enemy::CreateEnemy(550, 600);
-	old_enemy::CreateEnemy(700, 600);
-	old_enemy::CreateEnemy(800, 600);
+	for (int i = 0; i < 6; i++)
+	{
+		_blockList[i].loadRenderImage();
+		GetObjectManager()->push_object(&_blockList[i]);
+	}
 
 	transpoint *transp = new transpoint();
 	transp->init(300, 650, 150, 150);
@@ -73,11 +75,10 @@ void game_2::show()
 
 	GetObjectManager()->push_object(GetObjectManager()->GetPlayer());
 
-	for (int i = 0; i < 6; i++)
-	{
-		_blockList[i].loadRenderImage();
-		GetObjectManager()->push_object(&_blockList[i]);
-	}
+	old_enemy::CreateEnemy(550, 600);
+	old_enemy::CreateEnemy(700, 600);
+	old_enemy::CreateEnemy(800, 600);
+
 	GetSessionManager()->DeleteSession(SESSION_TRANS_FROM);
 }
 

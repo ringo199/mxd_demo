@@ -71,7 +71,6 @@ public:
 		{
 			if (obj->_base_point == this->_ui_objects[i]->_base_point)
 			{
-				delete obj;
 				this->_ui_objects.erase(this->_ui_objects.begin() + i);
 				break;
 			}
