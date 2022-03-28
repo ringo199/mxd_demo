@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <stack>
-#include <map>
+#include <unordered_map>
 #include "scene/ui_scene.h"
 
 using namespace std;
@@ -23,11 +23,13 @@ public:
     void eventRegister(event_manager*);
 
     ui_scene* getScene();
+    ui_game* getUIGame();
+    bool getIsLoading();
 
 private:
-    ui_scene*                       _loadingScene;
-    stack<e_scene_type>             _scene_types;
-    map<e_scene_type, ui_scene*>    _sceneMap;
+    ui_scene*                               _loadingScene;
+    stack<e_scene_type>                     _scene_types;
+    unordered_map<e_scene_type, ui_scene*>  _sceneMap;
 
     void loadScene(e_scene_type type);
 

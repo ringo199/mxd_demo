@@ -34,7 +34,8 @@ void  playSound(const char* name);
 
 void testDrawBar(area* a);
 int getStringLen(const char* text); // 获取字符串长度，区分中英文
-void drawText(area* a, const char* text, int fontSize, int color);
+void drawText(area* a, int offsetX, const char* text, int fontSize, int color, e_draw_text_type draw_text_type);
+void drawText(area* a, const char* text, int fontSize, int color, e_draw_text_type draw_text_type);
 void drawBloodBar(area* a, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent);
 void drawBloodBar(int x, int y, int width, int height, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent);
 

@@ -24,11 +24,31 @@ struct res
 
 };
 
-map<e_res_type, res> res_map;
+struct res_str
+{
+	res_str()
+	{
+		this->path = "";
+		this->size = 0;
+	}
+	res_str(string p, int s)
+	{
+		this->path = p;
+		this->size = s;
+	}
+
+	string path;
+	int size;
+
+};
+
+unordered_map<e_res_type, res> res_map;
+unordered_map<string, res_str> res_str_map;
 
 LoadManager::LoadManager()
 {
 	res_map[RES_BG] = res(RES_BG, "bark/bg.png", 1);
+	res_map[RES_GAME_BG_2] = res(RES_GAME_BG_2, "game_bg_2.jpg", 1);
 	res_map[RES_HERO] = res(RES_HERO, "hero%d.png", 12);
 	res_map[RES_HERO_ATTACK] = res(RES_HERO_ATTACK, "bark/g%02d.png", 11);
 	res_map[RES_ENEMY] = res(RES_ENEMY, "p%d.png", 6);
@@ -117,5 +137,77 @@ bool LoadManager::UnloadAsset(e_res_type res_type)
 int LoadManager::GetResSize(e_res_type res_type)
 {
 	return res_map[res_type].size;
+}
+
+
+// string
+void LoadManager::AddAsset(string path, int size)
+{
+	res_str_map[path] = res_str(path, size);
+}
+
+asset* LoadManager::LoadAsset(string res_type)
+{
+	if (this->_asset_str_map.find(res_type) == this->_asset_str_map.end() ||
+		this->_asset_str_map[res_type].type == ASSET_NULL)
+	{
+		this->_asset_str_map[res_type].type = ASSET_IMAGE;
+		this->_asset_str_map[res_type].img = new IMAGE[res_str_map[res_type].size];
+
+		for (int i = 0; i < res_str_map[res_type].size; ++i)
+		{
+			sprintf(this->path, res_str_map[res_type].path.c_str(), i + 1);
+			loadimage(&this->_asset_str_map[res_type].img[i], path);
+		}
+	}
+
+	return &this->_asset_str_map[res_type];
+}
+
+asset* LoadManager::LoadAsset(string res_type, area* a)
+{
+	if (this->_asset_str_map.find(res_type) == this->_asset_str_map.end() ||
+		this->_asset_str_map[res_type].type == ASSET_NULL)
+	{
+		this->_asset_str_map[res_type].type = ASSET_IMAGE;
+		this->_asset_str_map[res_type].img = new IMAGE[res_str_map[res_type].size];
+
+		for (int i = 0; i < res_str_map[res_type].size; ++i)
+		{
+			sprintf(this->path, res_str_map[res_type].path.c_str(), i + 1);
+			loadimage(&this->_asset_str_map[res_type].img[i], path, a->get_width(), a->get_height(), true);
+		}
+	}
+
+	return &this->_asset_str_map[res_type];
+}
+
+bool LoadManager::AssetIsInit(string res_type)
+{
+	if (this->_asset_str_map.find(res_type) == this->_asset_str_map.end() ||
+		this->_asset_str_map[res_type].type == ASSET_NULL)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool LoadManager::UnloadAsset(string res_type)
+{
+	if (!this->AssetIsInit(res_type)) return false;
+
+	if (this->_asset_str_map[res_type].type == ASSET_IMAGE)
+	{
+		delete[] this->_asset_str_map[res_type].img;
+		this->_asset_str_map[res_type].img = nullptr;
+	}
+
+	return true;
+}
+
+int LoadManager::GetResSize(string res_type)
+{
+	return res_str_map[res_type].size;
 }
 

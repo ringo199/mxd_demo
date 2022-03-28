@@ -11,11 +11,15 @@
 #include "ui_objectManager.h"
 #include "session_manager.h"
 #include "load_manager.h"
+#include "timer.h"
 
 namespace global
 {
 	bool GetUpdate();
 	void ChangeUpdate(bool update);
+	input* GetFocusInput();
+	void ChangeFocusInput(input* focusInput);
+
 	event_manager *GetEventManager();
 	UIManager *GetUIManager();
 	objectManager *GetObjectManager();
@@ -25,6 +29,7 @@ namespace global
 	UIObjectManager* GetUIObjectManager();
 	SessionManager* GetSessionManager();
 	LoadManager* GetLoadManager();
+	timer* GetTimer();
 } // namespace global
 
 #endif

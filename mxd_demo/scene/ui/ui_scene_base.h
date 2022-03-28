@@ -32,6 +32,34 @@ public:
     virtual void render() override final;
     virtual void afterEvent() override final;
 
+    void eventRegister();
+    static void setServerList(void*, string);
+
+protected:
+
+private:
+    vector<pair<int, string>> _server_list;
+};
+
+class ui_login : public ui_scene_base
+{
+public:
+    ui_login();
+    ~ui_login();
+
+    virtual void init() override final;
+    virtual void show() override final;
+    virtual void hide() override final;
+    virtual void clear() override final;
+
+    virtual void beforeEvent() override final;
+    virtual void render() override final;
+    virtual void afterEvent() override final;
+
+    void eventRegister();
+    static void setLoginSuccess(void*, string);
+    static void setLoginFailMessage(void*, string);
+
 protected:
 
 private:
@@ -72,6 +100,9 @@ public:
     virtual void render() override final;
     virtual void afterEvent() override final;
 
+    void eventRegister();
+    static void setSubServerList(void*, string);
+
 protected:
 
 private:
@@ -91,6 +122,11 @@ public:
     virtual void beforeEvent() override final;
     virtual void render() override final;
     virtual void afterEvent() override final;
+
+    void eventRegister();
+    static void setDiscussTxt(void*, string msg);
+
+    dialog* dia;
 
 private:
 
@@ -113,26 +149,6 @@ public:
 
 protected:
     board* _ui_loading_board;
-};
-
-class ui_login : public ui_scene_base
-{
-public:
-    ui_login();
-    ~ui_login();
-
-    virtual void init() override final;
-    virtual void show() override final;
-    virtual void hide() override final;
-    virtual void clear() override final;
-
-    virtual void beforeEvent() override final;
-    virtual void render() override final;
-    virtual void afterEvent() override final;
-
-protected:
-
-private:
 };
 
 

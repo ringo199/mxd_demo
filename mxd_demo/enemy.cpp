@@ -2,6 +2,7 @@
 #include "enemy.h"
 
 #include "global.h"
+#include "netEvent.h"
 
 using namespace global;
 
@@ -194,6 +195,7 @@ void old_enemy::CreateEnemy(int x, int y)
 
 void old_enemy::_died()
 {
+	sendMessage_type_5(0, 0, 20);
 	this->status = enemy_status::DIED;
 	GetObjectManager()->delete_object(this);
 }

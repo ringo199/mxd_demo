@@ -4,6 +4,7 @@
 namespace global
 {
 	static bool s_update = false;
+	static input* s_focus_input = NULL;
 
 	static event_manager* s_event_manager = NULL;
 	static UIManager *s_ui_manager = NULL;
@@ -14,6 +15,7 @@ namespace global
 	static UIObjectManager* s_ui_object_manager = NULL;
 	static SessionManager* s_session_manager = NULL;
 	static LoadManager* s_load_manager = NULL;
+	static timer* s_timer = NULL;
 
 	bool GetUpdate()
 	{
@@ -23,6 +25,16 @@ namespace global
 	void ChangeUpdate(bool update)
 	{
 		s_update = update;
+	}
+
+	input* GetFocusInput()
+	{
+		return s_focus_input;
+	}
+
+	void ChangeFocusInput(input* focusInput = nullptr)
+	{
+		s_focus_input = focusInput;
 	}
 
 	event_manager *GetEventManager()
@@ -111,6 +123,16 @@ namespace global
 		}
 
 		return s_load_manager;
+	}
+
+	timer* GetTimer()
+	{
+		if (s_timer == NULL)
+		{
+			s_timer = new timer;
+		}
+
+		return s_timer;
 	}
 
 } // namespace global

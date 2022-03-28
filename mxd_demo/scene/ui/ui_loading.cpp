@@ -24,12 +24,12 @@ void ui_loading::init()
 void ui_loading::show()
 {
     GetUIObjectManager()->push_object(this->_ui_loading_board);
-
-    Sleep(300);
+    Sleep(100);
 }
 
 void ui_loading::hide()
 {
+    Sleep(100);
     GetUIObjectManager()->delete_object(this->_ui_loading_board);
 }
 

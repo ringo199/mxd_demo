@@ -368,12 +368,61 @@ int getStringLen(const char* s)
     return count;
 }
 
-void drawText(area* a, const char* text, int fontSize, int color)
+void drawText(area* a, int offsetX, const char* text, int fontSize, int color, e_draw_text_type draw_text_type)
 {
     setbkmode(TRANSPARENT);
     settextcolor(color);
     settextstyle(fontSize, 0, "ºÚÌå");
-    outtextxy(a->get_coord_center()->x - fontSize * getStringLen(text) / 2, a->get_coord_center()->y - fontSize / 2, text);
+    /*
+        LONG    left;
+        LONG    top;
+        LONG    right;
+        LONG    bottom;
+    */
+    RECT r = {
+        a->get_coord1()->x + offsetX, a->get_coord1()->y,
+        a->get_coord2()->x, a->get_coord2()->y };
+    if (draw_text_type == DRAW_TEXT_SINGLE_ABS_MIDDLE)
+    {
+        drawtext(text, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    }
+    else if (draw_text_type == DRAW_TEXT_MUTI_LEFT)
+    {
+        drawtext(text, &r, DT_LEFT | DT_WORDBREAK);
+    }
+    else if (draw_text_type == DRAW_TEXT_SINGLE_LEFT)
+    {
+        drawtext(text, &r, DT_LEFT);
+    }
+}
+
+void drawText(area* a, const char* text, int fontSize, int color, e_draw_text_type draw_text_type = DRAW_TEXT_SINGLE_ABS_MIDDLE)
+{
+    setbkmode(TRANSPARENT);
+    settextcolor(color);
+    settextstyle(fontSize, 0, "ºÚÌå");
+    /*
+        LONG    left;
+        LONG    top;
+        LONG    right;
+        LONG    bottom;
+    */
+    RECT r = {
+        a->get_coord1()->x, a->get_coord1()->y,
+        a->get_coord2()->x, a->get_coord2()->y };
+    if (draw_text_type == DRAW_TEXT_SINGLE_ABS_MIDDLE)
+    {
+        drawtext(text, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    }
+    else if (draw_text_type == DRAW_TEXT_MUTI_LEFT)
+    {
+        drawtext(text, &r, DT_LEFT | DT_WORDBREAK);
+    }
+    else if (draw_text_type == DRAW_TEXT_SINGLE_LEFT)
+    {
+        drawtext(text, &r, DT_LEFT);
+    }
+    // outtextxy(a->get_coord_center()->x - fontSize * getStringLen(text) / 2, a->get_coord_center()->y - fontSize / 2, text);
 }
 
 void drawBloodBar(area* a, int lineWidth, int boardColor, int emptyColor, int fillColor, float percent)

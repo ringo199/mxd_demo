@@ -6,7 +6,7 @@
 #include "var.h"
 #include "tools.h"
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <cmath>
 #include "objects.h"
 
@@ -72,7 +72,7 @@ private:
 	vector<dynamic_collsion_object*> _dynamic_collsion_objects;
 
 	// 两个物体地址的和作为key，方向作为value
-	map<long, char> two_obs_pos;
+	unordered_map<long, char> two_obs_pos;
 
 	char _check_move_direction(world_area* static_obj, world_area* dynamic_obj);
 };

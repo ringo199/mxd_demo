@@ -87,6 +87,15 @@
     <ClInclude Include="load_manager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="netEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tools.cpp">
@@ -180,6 +189,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="load_manager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="netEvent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

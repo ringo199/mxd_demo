@@ -29,7 +29,6 @@ public:
     virtual void render() override final;
     virtual void afterEvent() override final;
 
-    static void npcEventTest(void*);
 };
 
 class game_2 : public game_scene_base

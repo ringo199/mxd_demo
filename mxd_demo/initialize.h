@@ -6,6 +6,7 @@
 #include "tools.h"
 #include "inputEvent.h"
 #include "mouseEvent.h"
+#include "netEvent.h"
 #include "global.h"
 #include "collision.h"
 #include "objectManager.h"

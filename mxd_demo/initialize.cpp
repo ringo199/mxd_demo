@@ -18,6 +18,7 @@ void init()
 
 	keyEvent();
 	mouseEvent();
+	netEvent();
 }
 
 void loop()

@@ -12,6 +12,11 @@
 #define	CMD_RSHI		0x80
 #define	CMD_SPACE		0x100
 #define	CMD_BACK		0x200
+#define	CMD_ESC			0x400
+#define	CMD_ENTER		0x800
+#define CMD_0			0x1000
+
+#define	CMD_A			0x1
 
 void keyEvent();
 

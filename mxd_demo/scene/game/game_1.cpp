@@ -38,7 +38,11 @@ void game_1::show()
 	npc->init(1000, 700, 100, 100);
 	npc->setResType(RES_NPC_ACAO);
 	npc->loadRenderImage();
-	npc->addEventListener((long)&this->npcEventTest);
+	npc->name = "acao";
+	npc->addEventListener([=]() {
+		GetUIManager()->getUIGame()
+			->dia->openDialog(npc->name, RES_NPC_ACAO, "ÎÒ²âÄãÃÇÂë");
+	});
 	GetObjectManager()->push_object(npc);
 
 	_blockList[0].init(0, 0, 200, 1000);
@@ -114,9 +118,4 @@ void game_1::render()
 void game_1::afterEvent()
 {
 	GetObjectManager()->afterEvent();
-}
-
-void game_1::npcEventTest(void* ctx)
-{
-	printf("isclicked\n");
 }

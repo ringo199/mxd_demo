@@ -5,8 +5,9 @@
 
 #include <stdio.h>
 #include <graphics.h>
-#include <map>
+#include <unordered_map>
 #include "var.h"
+#include <string.h>
 
 using namespace std;
 
@@ -34,8 +35,16 @@ public:
 	bool UnloadAsset(e_res_type);
 	int GetResSize(e_res_type);
 
+	void AddAsset(string, int);
+	asset* LoadAsset(string);
+	asset* LoadAsset(string, area*);
+	bool AssetIsInit(string);
+	bool UnloadAsset(string);
+	int GetResSize(string);
+
 private:
-	map<e_res_type, asset> _asset_map;
+	unordered_map<e_res_type, asset> _asset_map;
+	unordered_map<string, asset> _asset_str_map;
 	char path[64];
 };
 

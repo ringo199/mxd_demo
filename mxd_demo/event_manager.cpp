@@ -74,6 +74,27 @@ void event_manager::eventEmit(e_event_type type, int extra)
     }
 }
 
+void event_manager::eventEmit(e_event_type type, string extra)
+{
+    if (this->_events_fn.find(type) == this->_events_fn.end())
+    {
+        printf("event is not register\n");
+        return;
+    }
+
+    typedef void* (*FUNC)(string);
+    typedef void* (*FUNC2)(void*, string);
+
+    if (this->_events_obj.find(type) == this->_events_obj.end())
+    {
+        ((FUNC)this->_events_fn.find(type)->second)(extra);
+    }
+    else
+    {
+        ((FUNC2)this->_events_fn.find(type)->second)(this->_events_obj.find(type)->second, extra);
+    }
+}
+
 void event_manager::clearEvent(e_event_type type)
 {
     if (this->_events_fn.find(type) == this->_events_fn.end())

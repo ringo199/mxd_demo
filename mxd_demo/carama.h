@@ -31,7 +31,7 @@ public:
 	void mapCoord2CaramaCoora(coord incoo, coord* outcoo);
 
 private:
-	coord* _carama_center_point;
+	coord* _carama_center_point = nullptr;
 };
 
 

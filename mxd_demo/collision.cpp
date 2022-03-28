@@ -113,7 +113,7 @@ void collision::clear_objects()
 	vector<static_collsion_object*>().swap(this->_static_collsion_objects);
 	vector<dynamic_collsion_object*>().swap(this->_dynamic_collsion_objects);
 
-	map<long, char>().swap(this->two_obs_pos);
+	unordered_map<long, char>().swap(this->two_obs_pos);
 }
 
 /*

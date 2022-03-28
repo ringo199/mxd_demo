@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include "tools.h"
 
+#define KEY_DOWN(VK) ((GetAsyncKeyState(VK)& 0x8000 ? 1:0))
+#define KEY_DOWN_FOREGROUND(vk) (KEY_DOWN(vk) && GetForegroundWindow() == GetHWnd()) //Ç°¾°´°¿ÚÅÐ¶Ï
+
 using namespace global;
 
 static unsigned long long clickLeftTimer = 0;
@@ -49,9 +52,9 @@ void GetMouseCommand()
 	GetCursorPos(&pt);
 	ScreenToClient(GetForegroundWindow(), &pt);
 
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)	curMouseEvent |= MOUSE_LEFT_DOWN;
-	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)	curMouseEvent |= MOUSE_RIGHT_DOWN;
-	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000)	curMouseEvent |= MOUSE_MID_DOWN;
+	if (KEY_DOWN_FOREGROUND(VK_LBUTTON))	curMouseEvent |= MOUSE_LEFT_DOWN;
+	if (KEY_DOWN_FOREGROUND(VK_RBUTTON))	curMouseEvent |= MOUSE_RIGHT_DOWN;
+	if (KEY_DOWN_FOREGROUND(VK_MBUTTON))	curMouseEvent |= MOUSE_MID_DOWN;
 }
 
 void DispatchMouseCommand()

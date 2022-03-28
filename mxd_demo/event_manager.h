@@ -3,7 +3,7 @@
 #define __EVENT_MANAGER_H__
 
 #include <stdio.h>
-#include <map>
+#include <unordered_map>
 #include "var.h"
 
 using namespace std;
@@ -33,13 +33,14 @@ public:
 
     void eventEmit(e_event_type type);
     void eventEmit(e_event_type type, int extra);
+    void eventEmit(e_event_type type, string extra);
 
     void clearEvent(e_event_type type);
 
 private:
-    map<e_event_type, long> _events_fn;
-    map<e_event_type, void*> _events_obj;
-    // map<e_event_type, event_params> _events;
+    unordered_map<e_event_type, long> _events_fn;
+    unordered_map<e_event_type, void*> _events_obj;
+    // unordered_map<e_event_type, event_params> _events;
 
 };
 

@@ -2,6 +2,7 @@
 #include "player.h"
 
 #include "global.h"
+#include "netEvent.h"
 
 using namespace global;
 
@@ -15,9 +16,6 @@ player_info::player_info() : player()
 	this->area_atk_x = 50;
 	this->sa_percent = 1.0;
 	this->is_on_ground = false;
-
-	this->health = 50;
-	this->healthMax = 50;
 }
 
 player_info::~player_info()
@@ -144,11 +142,7 @@ void player_info::attack()
 
 void player_info::hit()
 {
-	this->health -= 10;
-	if (this->health <= 0)
-	{
-		this->health = this->healthMax;
-	}
+	sendMessage_type_5(-10, 0, 0);
 }
 
 void player_info::hitting()
@@ -246,7 +240,7 @@ void player_info::render()
 void player_info::other_event()
 {
 	this->checkIsRuning();
-	GetSessionManager()->SetSession(SESSION_HP, this->health);
+	//GetSessionManager()->SetSession(SESSION_HP, this->health);
 }
 
 void player_info::checkIsRuning()

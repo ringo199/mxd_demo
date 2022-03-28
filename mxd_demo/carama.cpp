@@ -25,6 +25,7 @@ void carama_info::setCenterPoint(coord* coo)
 
 void carama_info::changeCenterPoint()
 {
+	if (_carama_center_point == nullptr) return;
 	coord off_coo;
 	bool x_final = false,
 		 y_final = false;

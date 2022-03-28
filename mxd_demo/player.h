@@ -66,9 +66,6 @@ private:
 	int area_atk_x;
 	float sa_percent;
 
-	int health;
-	int healthMax;
-
 	void _move(coord coo);
 };
 

@@ -37,7 +37,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -99,7 +99,7 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
@@ -141,10 +141,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="carama.h" />
+    <ClInclude Include="cJSON.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="event_manager.h" />
     <ClInclude Include="load_manager.h" />
+    <ClInclude Include="netEvent.h" />
     <ClInclude Include="objectManager.h" />
     <ClInclude Include="game_scene_manager.h" />
     <ClInclude Include="inputEvent.h" />
@@ -158,6 +160,7 @@
     <ClInclude Include="scene\ui\ui_scene_base.h" />
     <ClInclude Include="scene\ui_scene.h" />
     <ClInclude Include="session_manager.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="ui_manager.h" />
@@ -167,10 +170,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="carama.cpp" />
+    <ClCompile Include="cJSON.c" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="event_manager.cpp" />
     <ClCompile Include="load_manager.cpp" />
+    <ClCompile Include="netEvent.cpp" />
     <ClCompile Include="objectManager.cpp" />
     <ClCompile Include="game_scene_manager.cpp" />
     <ClCompile Include="global.cpp" />
@@ -192,6 +197,7 @@
     <ClCompile Include="scene\ui\ui_login.cpp" />
     <ClCompile Include="scene\ui\ui_scene_base.cpp" />
     <ClCompile Include="session_manager.cpp" />
+    <ClCompile Include="timer.cpp" />
     <ClCompile Include="tools.cpp" />
     <ClCompile Include="ui_manager.cpp" />
     <ClCompile Include="ui_objectManager.cpp" />

@@ -3,6 +3,7 @@
 #include "tools.h"
 
 #include "global.h"
+#include "netEvent.h"
 
 using namespace global;
 using namespace std;
@@ -19,6 +20,9 @@ object::~object()
 render_object::render_object()
 {
 	this->_render_base_point = NULL;
+	this->_res_type = RES_NULL;
+	this->_res_str_path = "";
+	this->_is_fixed = true;
 }
 
 render_object::~render_object()
@@ -28,18 +32,39 @@ render_object::~render_object()
 
 void render_object::loadRenderImage()
 {
-	if (this->_res_type != RES_NULL)
+	if (this->_is_fixed)
 	{
-		GetLoadManager()->LoadAsset(this->_res_type, this->get_render_area());
+		if (this->_res_type != RES_NULL)
+		{
+			GetLoadManager()->LoadAsset(this->_res_type, this->get_render_area());
+		}
+	}
+	else
+	{
+		if (this->_res_str_path != "")
+		{
+			GetLoadManager()->LoadAsset(this->_res_str_path, this->get_render_area());
+		}
 	}
 }
 
 void render_object::renderImage()
 {
-	if (this->_res_type != RES_NULL)
+	if (this->_is_fixed)
 	{
-		putimage(this->get_render_area()->get_coord1()->x, this->get_render_area()->get_coord1()->y,
-			GetLoadManager()->LoadAsset(this->_res_type, this->get_render_area())->img);
+		if (this->_res_type != RES_NULL)
+		{
+			putimage(this->get_render_area()->get_coord1()->x, this->get_render_area()->get_coord1()->y,
+				GetLoadManager()->LoadAsset(this->_res_type, this->get_render_area())->img);
+		}
+	}
+	else
+	{
+		if (this->_res_str_path != "")
+		{
+			putimage(this->get_render_area()->get_coord1()->x, this->get_render_area()->get_coord1()->y,
+				GetLoadManager()->LoadAsset(this->_res_str_path, this->get_render_area())->img);
+		}
 	}
 }
 
@@ -51,8 +76,15 @@ world_area* render_object::get_render_area()
 
 void transpoint_object::trans()
 {
-	GetSessionManager()->SetSession(SESSION_TRANS_FROM, this->_game_scene);
-	GetEventManager()->eventEmit(GAME_GOTO_SCENE, this->_game_scene);
+	GetObjectManager()->clear_objects();
+	GetObjectManager()->GetPlayer()->clearEventRegister();
+
+	GetEventManager()->eventEmit(UI_BEGIN_LOADING);
+	sendMessage_type_6(
+		this->_to_game_map_id,
+		GetSessionManager()->GetSession(SESSION_MAP_ID));
+	// GetSessionManager()->SetSession(SESSION_TRANS_FROM, this->_game_scene);
+	// GetEventManager()->eventEmit(GAME_GOTO_SCENE, this->_game_scene);
 }
 
 int image_indexs_::GetImageIndex(e_res_type res_type)

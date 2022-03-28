@@ -5,7 +5,8 @@
 
 #include "var.h"
 #include "tools.h"
-#include <map>
+#include <unordered_map>
+#include <functional>
 
 class object
 {
@@ -118,13 +119,16 @@ public:
 	void loadRenderImage();
 	void renderImage();
 
-	void setResType(e_res_type res_type) { this->_res_type = res_type; }
+	void setResType(e_res_type res_type) { this->_res_type = res_type; this->_is_fixed = true; }
+	void setResStringPath(std::string res_str_path) { this->_res_str_path = res_str_path; this->_is_fixed = false; }
 
 	object* _render_base_point;
 
 protected:
 	world_area _render_area;
+	bool _is_fixed;
 	e_res_type _res_type;
+	std::string _res_str_path;
 };
 
 class collsion_object
@@ -363,11 +367,17 @@ public:
 		this->_game_scene = type;
 	}
 
+	void setTranspointTo(int toGameMapID)
+	{
+		this->_to_game_map_id = toGameMapID;
+	}
+
 	void trans();
 
 	object* _transpoint_base_point;
 
 	e_game_scene_type _game_scene;
+	int _to_game_map_id;
 
 protected:
 	world_area _transpoint_area;
@@ -399,10 +409,22 @@ public:
 		this->_eventListener = func;
 	}
 
+	void addEventListener(std::function<void(void)> func)
+	{
+		this->_eventListenerFunc = func;
+	}
+
 	void callEventListener()
 	{
-		typedef void* (*FUNC)(void*);
-		((FUNC)this->_eventListener)(NULL);
+		if (this->_eventListener != 0)
+		{
+			typedef void* (*FUNC)(void*);
+			((FUNC)this->_eventListener)(NULL);
+		}
+		else
+		{
+			this->_eventListenerFunc();
+		}
 	}
 
 	object* _click_event_base_point;
@@ -411,6 +433,7 @@ protected:
 	world_area _click_event_area;
 
 	long _eventListener;
+	std::function<void(void)> _eventListenerFunc;
 };
 
 // ----------------------------------------
@@ -450,7 +473,7 @@ public:
 	IMAGE* GetImage(e_res_type);
 
 protected:
-	std::map<e_res_type, int> _img_indexs;
+	std::unordered_map<e_res_type, int> _img_indexs;
 };
 
 // ----------------------------------------
@@ -599,7 +622,9 @@ class NPC : public render_object,
 {
 public:
 	NPC() : render_object(), dynamic_object(), click_event_object()
-	{}
+	{
+		this->name = "";
+	}
 
 	void init(coord coo, int w, int h)
 	{
@@ -614,6 +639,8 @@ public:
 		this->setRenderArea(this);
 		this->setClickEventArea(this);
 	}
+
+	const char* name;
 };
 
 

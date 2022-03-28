@@ -32,7 +32,6 @@ void UIManager::nextScene(void* ctx)
         return;
     }
 
-    printf("%d\n", cur_size);
     e_scene_type next_type = (e_scene_type)cur_size;
 
     if (cur_size > 0)
@@ -57,13 +56,13 @@ void UIManager::backScene(void* ctx)
         return;
     }
 
-    context->_loadingScene->show();
-    context->_is_loading = true;
     context->hideScene();
+    context->_is_loading = true;
+    context->_loadingScene->show();
     context->clearScene();
-    context->showScene();
-    context->_is_loading = false;
     context->_loadingScene->hide();
+    context->_is_loading = false;
+    context->showScene();
 }
 
 void UIManager::backHomeScene(void* ctx)
@@ -87,7 +86,7 @@ void UIManager::backHomeScene(void* ctx)
     context->_loadingScene->hide();
     for (;;)
     {
-        if (context->_scene_types.size() == 1)
+        if (context->_scene_types.top() == (e_scene_type)0)
         {
             break;
         }
@@ -175,4 +174,20 @@ ui_scene* UIManager::getScene()
     {
         return this->_sceneMap[this->_scene_types.top()];
     }
+}
+ui_game* UIManager::getUIGame()
+{
+    if (this->_scene_types.top() == GAME)
+    {
+        return (ui_game*)this->_sceneMap[GAME];
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+bool UIManager::getIsLoading()
+{
+    return this->_is_loading;
 }
