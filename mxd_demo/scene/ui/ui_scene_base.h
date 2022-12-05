@@ -11,11 +11,9 @@ class ui_scene_base : public scene_base
 public:
     ui_scene_base();
     ~ui_scene_base();
-
 };
 
 typedef ui_scene_base ui_scene;
-
 
 class ui_check_master_server : public ui_scene_base
 {
@@ -33,10 +31,9 @@ public:
     virtual void afterEvent() override final;
 
     void eventRegister();
-    static void setServerList(void*, string);
+    static void setServerList(void *, string);
 
 protected:
-
 private:
     vector<pair<int, string>> _server_list;
 };
@@ -57,11 +54,10 @@ public:
     virtual void afterEvent() override final;
 
     void eventRegister();
-    static void setLoginSuccess(void*, string);
-    static void setLoginFailMessage(void*, string);
+    static void setLoginSuccess(void *, string);
+    static void setLoginFailMessage(void *, string);
 
 protected:
-
 private:
 };
 
@@ -81,7 +77,6 @@ public:
     virtual void afterEvent() override final;
 
 protected:
-
 private:
 };
 
@@ -101,10 +96,9 @@ public:
     virtual void afterEvent() override final;
 
     void eventRegister();
-    static void setSubServerList(void*, string);
+    static void setSubServerList(void *, string);
 
 protected:
-
 private:
 };
 
@@ -124,12 +118,11 @@ public:
     virtual void afterEvent() override final;
 
     void eventRegister();
-    static void setDiscussTxt(void*, string msg);
+    static void setDiscussTxt(void *, string msg);
 
-    dialog* dia;
+    dialog *dia;
 
 private:
-
 };
 
 class ui_loading : public ui_scene_base
@@ -148,8 +141,7 @@ public:
     virtual void afterEvent() override final;
 
 protected:
-    board* _ui_loading_board;
+    board *_ui_loading_board;
 };
-
 
 #endif
